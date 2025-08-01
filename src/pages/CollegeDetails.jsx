@@ -1,13 +1,242 @@
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { motion } from "framer-motion";
+import collegeData from "../data/collegeData"; // Adjust the path as per your project structure
 
 const CollegeDetails = () => {
   const { collegeId } = useParams();
-  //   console.log(collegeId);
+  const [college, setCollege] = useState(null);
+
+  useEffect(() => {
+    // Simulate fetching college by ID; replace with API call in a real app
+    const foundCollege = collegeData.find((c) => c._id === collegeId);
+    setCollege(foundCollege);
+  }, [collegeId]);
+
+  // Animation variants for the main container
+  const containerVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  // Animation variants for sections
+  const sectionVariants = {
+    hidden: { opacity: 0, x: -30 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.5,
+        delay: 0.2,
+      },
+    },
+  };
+
+  // Animation for gallery images
+  const imageVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: (i) => ({
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delay: i * 0.2,
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    }),
+  };
+
+  if (!college) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-2xl font-semibold text-gray-600">Loading...</div>
+      </div>
+    );
+  }
 
   return (
-    <div>
-      <h1>details </h1>
-    </div>
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="min-h-screen bg-gradient-to-b from-blue-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8"
+    >
+      <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
+        {/* Header Section */}
+        <div className="relative">
+          <img
+            src={college.image}
+            alt={college.name}
+            className="w-full h-80 object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end">
+            <h1 className="text-4xl font-extrabold text-white p-6">
+              {college.name}
+            </h1>
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <div className="p-8">
+          {/* Basic Info */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Overview</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <p className="text-gray-700">
+                <span className="font-semibold">Location:</span>{" "}
+                {college.location}
+              </p>
+              <p className="text-gray-700">
+                <span className="font-semibold">Rating:</span> {college.rating}
+                /5
+              </p>
+              <p className="text-gray-700">
+                <span className="font-semibold">Admission Period:</span>{" "}
+                {college.admissionDates.start} to {college.admissionDates.end}
+              </p>
+              <p className="text-gray-700">
+                <span className="font-semibold">Research Works:</span>{" "}
+                {college.numberOfResearchWorks}
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Gallery Images */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+            className="mt-8"
+          >
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Gallery</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {college.galleryImages.map((img, index) => (
+                <motion.img
+                  key={index}
+                  src={img}
+                  alt={`Gallery image ${index + 1}`}
+                  className="w-full h-40 object-cover rounded-lg"
+                  variants={imageVariants}
+                  custom={index}
+                />
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Events Section */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+            className="mt-8"
+          >
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Events</h2>
+            <div className="space-y-4">
+              {college.events.map((event, index) => (
+                <div
+                  key={index}
+                  className="p-4 bg-blue-50 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300"
+                >
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {event.name}
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    <span className="font-medium">Date:</span> {event.date}
+                  </p>
+                  <p className="text-gray-700">{event.description}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Sports Section */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+            className="mt-8"
+          >
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Sports</h2>
+            <div className="space-y-4">
+              {college.sports.map((sport, index) => (
+                <div
+                  key={index}
+                  className="p-4 bg-blue-50 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300"
+                >
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {sport.name}
+                  </h3>
+                  <p className="text-gray-700">{sport.description}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Additional Info */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+            className="mt-8"
+          >
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              Additional Details
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Contact</h3>
+                <p className="text-gray-700">
+                  <span className="font-medium">Email:</span>{" "}
+                  <a
+                    href={`mailto:${college.contact.email}`}
+                    className="text-blue-600 hover:underline"
+                  >
+                    {college.contact.email}
+                  </a>
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-medium">Phone:</span>{" "}
+                  {college.contact.phone}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-medium">Website:</span>{" "}
+                  <a
+                    href={college.contact.website}
+                    className="text-blue-600 hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {college.contact.website}
+                  </a>
+                </p>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Tuition</h3>
+                <p className="text-gray-700">
+                  <span className="font-medium">Undergraduate:</span> $
+                  {college.tuition.undergraduate.toLocaleString()}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-medium">Graduate:</span> $
+                  {college.tuition.graduate.toLocaleString()}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </motion.div>
   );
 };
 

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { motion } from "framer-motion";
-import collegeData from "../../data/collegeData.js";
+import collegeData from "../data/collegeData.js";
 
 const CollegePage = () => {
   const [colleges, setColleges] = useState([]);

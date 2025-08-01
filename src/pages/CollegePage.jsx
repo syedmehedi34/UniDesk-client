@@ -3,10 +3,14 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { motion } from "framer-motion";
 import collegeData from "../data/collegeData.js";
+import useUniversities from "../hooks/useUniversities.jsx";
 
 const CollegePage = () => {
   const [colleges, setColleges] = useState([]);
   //   console.log(collegeData);
+  const [universities, isLoadingUniversities, universitiesRefetch] =
+    useUniversities();
+  console.log(universities);
 
   useEffect(() => {
     // Simulating data fetch; in a real app, this would be an API call

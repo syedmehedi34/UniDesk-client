@@ -32,6 +32,10 @@ export const router = createBrowserRouter([
         element: <CollegePage />,
       },
       {
+        path: "/colleges/:collegeId",
+        element: <div>hello</div>,
+      },
+      {
         path: "/admission",
         element: <div>Admission Content</div>,
       },

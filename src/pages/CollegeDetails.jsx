@@ -15,17 +15,18 @@ import {
   Globe,
   DollarSign,
 } from "lucide-react";
-import collegeData from "../data/collegeData"; // Adjust the path as per your project structure
+import useUniversities from "../hooks/useUniversities";
 
 const CollegeDetails = () => {
+  const [universities, isLoadingUniversities] = useUniversities();
   const { collegeId } = useParams();
   const [college, setCollege] = useState(null);
 
   useEffect(() => {
     // Simulate fetching college by ID; replace with API call in a real app
-    const foundCollege = collegeData.find((c) => c._id === collegeId);
+    const foundCollege = universities.find((c) => c._id === collegeId);
     setCollege(foundCollege);
-  }, [collegeId]);
+  }, [collegeId, universities]);
 
   // Animation variants for the main container
   const containerVariants = {

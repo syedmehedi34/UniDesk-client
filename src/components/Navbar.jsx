@@ -23,8 +23,8 @@ const Navbar = () => {
     <nav
       className={`sticky top-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-white/30 backdrop-blur-lg shadow-md"
-          : "bg-blue-600 text-white"
+          ? "bg-white/40 backdrop-blur-lg shadow-md"
+          : "bg-navbar text-white"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -80,7 +80,7 @@ const Navbar = () => {
               <>
                 <Link
                   to="/profile"
-                  className={`hover:text-blue-300 transition ${
+                  className={`hover:text-blue-300 font-bold transition ${
                     isScrolled ? "text-gray-800" : "text-white"
                   }`}
                 >

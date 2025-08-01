@@ -1,13 +1,4 @@
-:root {
-  --bg-container: #204492a1; /* Header background */
-  --primary-bg: #1e3a8a; /* Primary button background */
-  --primary-text: #ffffff; /* Primary button text */
-  --secondary-border: #64748b; /* Secondary button border */
-  --secondary-text: #64748b; /* Secondary button text */
-  --card-bg: #ffffff; /* Card/section background */
-  --section-bg: #f8fafc; /* Section background */
-  --header-text: #0f172a; /* Headers/titles */
-  --body-text: #212121; /* Body text */
-  --primary-hover: #9096a8; /* Slightly lighter primary for hover */
-  --overlay-bg: rgba(15, 23, 42, 0.2); /* Header overlay (using header-text) */
+.bg-navbar {
+  background-color: teal;
+  opacity: 0.8;
 }

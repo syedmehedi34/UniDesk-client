@@ -6,6 +6,7 @@ import Registration from "../pages/Auth/Registration";
 import Error from "../pages/Error";
 import ProtectedRoute from "./ProtectedRoute";
 import MyCollege from "../pages/MyCollege/MyCollege";
+import Profile from "../pages/Profile";
 
 export const router = createBrowserRouter([
   {
@@ -45,7 +46,7 @@ export const router = createBrowserRouter([
         path: "/profile",
         element: (
           <ProtectedRoute>
-            <div>Profile</div>
+            <Profile />
           </ProtectedRoute>
         ),
       },

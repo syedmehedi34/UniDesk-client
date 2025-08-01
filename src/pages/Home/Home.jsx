@@ -4,7 +4,7 @@ import Header from "./Header";
 const Home = () => {
   return (
     <div>
-      <Header />
+      <Header onSearch={(query) => console.log(query)} />
     </div>
   );
 };

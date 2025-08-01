@@ -5,9 +5,9 @@ const collegeData = [
     image:
       "https://i2-prod.cambridge-news.co.uk/news/cambridge-news/article24183175.ece/ALTERNATES/s615/0_JS238376993.jpg",
     galleryImages: [
-      "https://example.com/images/graduates-group-2023.jpg",
-      "https://example.com/images/commencement-2024.jpg",
-      "https://example.com/images/campus-festival-2025.jpg",
+      "https://www.stevenson.edu/wp-content/uploads/homepage-still3.jpg",
+      "https://media.gettyimages.com/id/1457309428/photo/students-on-their-way-to-and-from-campus-building.jpg?s=612x612&w=gi&k=20&c=d0fj6JB78QK22whLzcKeuf0o1nPX9_DjrOnHqZOHCXw=",
+      "https://media.gettyimages.com/id/1760335135/photo/group-of-students-exit-university-building.jpg?s=170667a&w=gi&k=20&c=Tk3PzhwlhvFl_I3qILPSDiPmjLTJOvE00RkqXYF855M=",
     ],
     admissionDates: {
       start: "2025-01-15",
@@ -129,9 +129,9 @@ const collegeData = [
     image:
       "https://www.oxfordscholastica.com/wp-content/uploads/2023/07/cambridge-college.jpg",
     galleryImages: [
-      "https://example.com/images/graduates-riverview-2023.jpg",
-      "https://example.com/images/riverview-commencement-2024.jpg",
-      "https://example.com/images/riverview-campus-event-2025.jpg",
+      "https://www.stevenson.edu/wp-content/uploads/homepage-still3.jpg",
+      "https://media.gettyimages.com/id/1457309428/photo/students-on-their-way-to-and-from-campus-building.jpg?s=612x612&w=gi&k=20&c=d0fj6JB78QK22whLzcKeuf0o1nPX9_DjrOnHqZOHCXw=",
+      "https://media.gettyimages.com/id/1760335135/photo/group-of-students-exit-university-building.jpg?s=170667a&w=gi&k=20&c=Tk3PzhwlhvFl_I3qILPSDiPmjLTJOvE00RkqXYF855M=",
     ],
     admissionDates: {
       start: "2025-02-01",
@@ -254,9 +254,9 @@ const collegeData = [
     image:
       "https://cdn.britannica.com/85/13085-050-C2E88389/Corpus-Christi-College-University-of-Cambridge-England.jpg",
     galleryImages: [
-      "https://example.com/images/graduates-harborview-2023.jpg",
-      "https://example.com/images/harborview-commencement-2024.jpg",
-      "https://example.com/images/harborview-campus-tour-2025.jpg",
+      "https://www.stevenson.edu/wp-content/uploads/homepage-still3.jpg",
+      "https://media.gettyimages.com/id/1457309428/photo/students-on-their-way-to-and-from-campus-building.jpg?s=612x612&w=gi&k=20&c=d0fj6JB78QK22whLzcKeuf0o1nPX9_DjrOnHqZOHCXw=",
+      "https://media.gettyimages.com/id/1760335135/photo/group-of-students-exit-university-building.jpg?s=170667a&w=gi&k=20&c=Tk3PzhwlhvFl_I3qILPSDiPmjLTJOvE00RkqXYF855M=",
     ],
     admissionDates: {
       start: "2025-01-10",
@@ -378,9 +378,9 @@ const collegeData = [
     image:
       "https://static.independent.co.uk/2022/06/08/21/3f1c0f46776f76b5a239dfe8096df8f1Y29udGVudHNlYXJjaGFwaSwxNjU0Nzk1MzY2-2.67230106.jpg",
     galleryImages: [
-      "https://example.com/images/graduates-crestwood-2023.jpg",
-      "https://example.com/images/crestwood-graduation-2024.jpg",
-      "https://example.com/images/crestwood-campus-fair-2025.jpg",
+      "https://www.stevenson.edu/wp-content/uploads/homepage-still3.jpg",
+      "https://media.gettyimages.com/id/1457309428/photo/students-on-their-way-to-and-from-campus-building.jpg?s=612x612&w=gi&k=20&c=d0fj6JB78QK22whLzcKeuf0o1nPX9_DjrOnHqZOHCXw=",
+      "https://media.gettyimages.com/id/1760335135/photo/group-of-students-exit-university-building.jpg?s=170667a&w=gi&k=20&c=Tk3PzhwlhvFl_I3qILPSDiPmjLTJOvE00RkqXYF855M=",
     ],
     admissionDates: {
       start: "2025-01-20",
@@ -502,9 +502,9 @@ const collegeData = [
     image:
       "https://www.timeshighereducation.com/student/sites/default/files/cbh_rhul_arch1_0026v1_1_0.jpg",
     galleryImages: [
-      "https://example.com/images/graduates-maplewood-2023.jpg",
-      "https://example.com/images/maplewood-graduation-2024.jpg",
-      "https://example.com/images/maplewood-campus-event-2025.jpg",
+      "https://www.stevenson.edu/wp-content/uploads/homepage-still3.jpg",
+      "https://media.gettyimages.com/id/1457309428/photo/students-on-their-way-to-and-from-campus-building.jpg?s=612x612&w=gi&k=20&c=d0fj6JB78QK22whLzcKeuf0o1nPX9_DjrOnHqZOHCXw=",
+      "https://media.gettyimages.com/id/1760335135/photo/group-of-students-exit-university-building.jpg?s=170667a&w=gi&k=20&c=Tk3PzhwlhvFl_I3qILPSDiPmjLTJOvE00RkqXYF855M=",
     ],
     admissionDates: {
       start: "2025-02-15",
@@ -625,9 +625,9 @@ const collegeData = [
     image:
       "https://images.shiksha.com/mediadata/images/articles/1744019588phpVCRWzS.jpeg",
     galleryImages: [
-      "https://example.com/images/graduates-oakridge-2023.jpg",
-      "https://example.com/images/oakridge-commencement-2024.jpg",
-      "https://example.com/images/oakridge-campus-fest-2025.jpg",
+      "https://www.stevenson.edu/wp-content/uploads/homepage-still3.jpg",
+      "https://media.gettyimages.com/id/1457309428/photo/students-on-their-way-to-and-from-campus-building.jpg?s=612x612&w=gi&k=20&c=d0fj6JB78QK22whLzcKeuf0o1nPX9_DjrOnHqZOHCXw=",
+      "https://media.gettyimages.com/id/1760335135/photo/group-of-students-exit-university-building.jpg?s=170667a&w=gi&k=20&c=Tk3PzhwlhvFl_I3qILPSDiPmjLTJOvE00RkqXYF855M=",
     ],
     admissionDates: {
       start: "2025-01-25",
@@ -749,9 +749,9 @@ const collegeData = [
     image:
       "https://www.travelandleisure.com/thmb/E5szi7N2r1eN-8b3vkl5STvWz9o=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/notre-dame-university-COLLEGECAMP0421-039ce0bfd40b4e429b825c6fb6ebfaa6.jpg",
     galleryImages: [
-      "https://example.com/images/graduates-silverlake-2023.jpg",
-      "https://example.com/images/silverlake-graduation-2024.jpg",
-      "https://example.com/images/silverlake-campus-rally-2025.jpg",
+      "https://www.stevenson.edu/wp-content/uploads/homepage-still3.jpg",
+      "https://media.gettyimages.com/id/1457309428/photo/students-on-their-way-to-and-from-campus-building.jpg?s=612x612&w=gi&k=20&c=d0fj6JB78QK22whLzcKeuf0o1nPX9_DjrOnHqZOHCXw=",
+      "https://media.gettyimages.com/id/1760335135/photo/group-of-students-exit-university-building.jpg?s=170667a&w=gi&k=20&c=Tk3PzhwlhvFl_I3qILPSDiPmjLTJOvE00RkqXYF855M=",
     ],
     admissionDates: {
       start: "2025-02-10",
@@ -871,9 +871,9 @@ const collegeData = [
     image:
       "https://static.toiimg.com/thumb/msid-120576896,width-1070,height-580,imgsize-378465,resizemode-6,overlay-toi_sw,pt-32,y_pad-40/photo.jpg",
     galleryImages: [
-      "https://example.com/images/graduates-pinecrest-2023.jpg",
-      "https://example.com/images/pinecrest-commencement-2024.jpg",
-      "https://example.com/images/pinecrest-campus-event-2025.jpg",
+      "https://www.stevenson.edu/wp-content/uploads/homepage-still3.jpg",
+      "https://media.gettyimages.com/id/1457309428/photo/students-on-their-way-to-and-from-campus-building.jpg?s=612x612&w=gi&k=20&c=d0fj6JB78QK22whLzcKeuf0o1nPX9_DjrOnHqZOHCXw=",
+      "https://media.gettyimages.com/id/1760335135/photo/group-of-students-exit-university-building.jpg?s=170667a&w=gi&k=20&c=Tk3PzhwlhvFl_I3qILPSDiPmjLTJOvE00RkqXYF855M=",
     ],
     admissionDates: {
       start: "2025-02-05",

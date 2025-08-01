@@ -1,6 +1,20 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { motion } from "framer-motion";
+import {
+  MapPin,
+  Star,
+  Calendar,
+  FlaskConical,
+  Image,
+  Sparkles,
+  Trophy,
+  Mail,
+  Phone,
+  Globe,
+  DollarSign,
+} from "lucide-react";
 import collegeData from "../data/collegeData"; // Adjust the path as per your project structure
 
 const CollegeDetails = () => {
@@ -39,8 +53,8 @@ const CollegeDetails = () => {
     },
   };
 
-  // Animation for gallery images
-  const imageVariants = {
+  // Animation for gallery images and icons
+  const itemVariants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: (i) => ({
       opacity: 1,
@@ -91,27 +105,33 @@ const CollegeDetails = () => {
             initial="hidden"
             animate="visible"
           >
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Overview</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+              <FlaskConical className="h-6 w-6 text-blue-600 mr-2" />
+              Overview
+            </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <p className="text-gray-700">
+              <p className="text-gray-700 flex items-center">
+                <MapPin className="h-5 w-5 text-blue-600 mr-2" />
                 <span className="font-semibold">Location:</span>{" "}
                 {college.location}
               </p>
-              <p className="text-gray-700">
+              <p className="text-gray-700 flex items-center">
+                <Star className="h-5 w-5 text-blue-600 mr-2" />
                 <span className="font-semibold">Rating:</span> {college.rating}
                 /5
               </p>
-              <p className="text-gray-700">
+              <p className="text-gray-700 flex items-center">
+                <Calendar className="h-5 w-5 text-blue-600 mr-2" />
                 <span className="font-semibold">Admission Period:</span>{" "}
                 {college.admissionDates.start} to {college.admissionDates.end}
               </p>
-              <p className="text-gray-700">
+              <p className="text-gray-700 flex items-center">
+                <FlaskConical className="h-5 w-5 text-blue-600 mr-2" />
                 <span className="font-semibold">Research Works:</span>{" "}
                 {college.numberOfResearchWorks}
               </p>
             </div>
           </motion.div>
-
           {/* Gallery Images */}
           <motion.div
             variants={sectionVariants}
@@ -119,84 +139,101 @@ const CollegeDetails = () => {
             animate="visible"
             className="mt-8"
           >
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Gallery</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+              <Image className="h-6 w-6 text-blue-600 mr-2" />
+              Gallery
+            </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {college.galleryImages.map((img, index) => (
                 <motion.img
                   key={index}
-                  src={img}
+                  src={img || "https://via.placeholder.com/150"}
                   alt={`Gallery image ${index + 1}`}
                   className="w-full h-40 object-cover rounded-lg"
-                  variants={imageVariants}
+                  variants={itemVariants}
                   custom={index}
                 />
               ))}
             </div>
           </motion.div>
-
-          {/* Events Section */}
+          {/* /* Events Section */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
             animate="visible"
             className="mt-8"
           >
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Events</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+              <Sparkles className="h-6 w-6 text-blue-600 mr-2" />
+              Events
+            </h2>
             <div className="space-y-4">
               {college.events.map((event, index) => (
-                <div
+                <motion.div
                   key={index}
                   className="p-4 bg-blue-50 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300"
+                  variants={itemVariants}
+                  custom={index}
                 >
-                  <h3 className="text-lg font-semibold text-gray-900">
+                  <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                    <Calendar className="h-5 w-5 text-blue-600 mr-2" />
                     {event.name}
                   </h3>
                   <p className="text-sm text-gray-600">
                     <span className="font-medium">Date:</span> {event.date}
                   </p>
                   <p className="text-gray-700">{event.description}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
           </motion.div>
-
-          {/* Sports Section */}
+          {/* /* Sports Section  */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
             animate="visible"
             className="mt-8"
           >
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Sports</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+              <Trophy className="h-6 w-6 text-blue-600 mr-2" />
+              Sports
+            </h2>
             <div className="space-y-4">
               {college.sports.map((sport, index) => (
-                <div
+                <motion.div
                   key={index}
                   className="p-4 bg-blue-50 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300"
+                  variants={itemVariants}
+                  custom={index}
                 >
-                  <h3 className="text-lg font-semibold text-gray-900">
+                  <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                    <Trophy className="h-5 w-5 text-blue-600 mr-2" />
                     {sport.name}
                   </h3>
                   <p className="text-gray-700">{sport.description}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
           </motion.div>
-
-          {/* Additional Info */}
+          {/* /* Additional Info */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
             animate="visible"
             className="mt-8"
           >
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+              <Globe className="h-6 w-6 text-blue-600 mr-2" />
               Additional Details
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">Contact</h3>
-                <p className="text-gray-700">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                  <Mail className="h-5 w-5 text-blue-600 mr-2" />
+                  Contact
+                </h3>
+                <p className="text-gray-700 flex items-center">
+                  <Mail className="h-5 w-5 text-blue-600 mr-2" />
                   <span className="font-medium">Email:</span>{" "}
                   <a
                     href={`mailto:${college.contact.email}`}
@@ -205,11 +242,13 @@ const CollegeDetails = () => {
                     {college.contact.email}
                   </a>
                 </p>
-                <p className="text-gray-700">
+                <p className="text-gray-700 flex items-center">
+                  <Phone className="h-5 w-5 text-blue-600 mr-2" />
                   <span className="font-medium">Phone:</span>{" "}
                   {college.contact.phone}
                 </p>
-                <p className="text-gray-700">
+                <p className="text-gray-700 flex items-center">
+                  <Globe className="h-5 w-5 text-blue-600 mr-2" />
                   <span className="font-medium">Website:</span>{" "}
                   <a
                     href={college.contact.website}
@@ -222,12 +261,17 @@ const CollegeDetails = () => {
                 </p>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">Tuition</h3>
-                <p className="text-gray-700">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                  <DollarSign className="h-5 w-5 text-blue-600 mr-2" />
+                  Tuition
+                </h3>
+                <p className="text-gray-700 flex items-center">
+                  <DollarSign className="h-5 w-5 text-blue-600 mr-2" />
                   <span className="font-medium">Undergraduate:</span> $
                   {college.tuition.undergraduate.toLocaleString()}
                 </p>
-                <p className="text-gray-700">
+                <p className="text-gray-700 flex items-center">
+                  <DollarSign className="h-5 w-5 text-blue-600 mr-2" />
                   <span className="font-medium">Graduate:</span> $
                   {college.tuition.graduate.toLocaleString()}
                 </p>

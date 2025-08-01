@@ -41,6 +41,14 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: "/profile",
+        element: (
+          <ProtectedRoute>
+            <div>Profile</div>
+          </ProtectedRoute>
+        ),
+      },
 
       // auth routes
       {

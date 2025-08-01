@@ -2,7 +2,8 @@ const collegeData = [
   {
     _id: "66aa9f2b1c4d5e7f9a123456",
     name: "Springfield University",
-    image: "https://example.com/images/springfield-university.jpg",
+    image:
+      "https://i2-prod.cambridge-news.co.uk/news/cambridge-news/article24183175.ece/ALTERNATES/s615/0_JS238376993.jpg",
     galleryImages: [
       "https://example.com/images/graduates-group-2023.jpg",
       "https://example.com/images/commencement-2024.jpg",
@@ -125,7 +126,8 @@ const collegeData = [
   {
     _id: "66ab0c3d2e5f6a8g0b123789",
     name: "Riverview College",
-    image: "https://example.com/images/riverview-college.jpg",
+    image:
+      "https://www.oxfordscholastica.com/wp-content/uploads/2023/07/cambridge-college.jpg",
     galleryImages: [
       "https://example.com/images/graduates-riverview-2023.jpg",
       "https://example.com/images/riverview-commencement-2024.jpg",
@@ -249,7 +251,8 @@ const collegeData = [
   {
     _id: "66ab1d4e3f6g7b9h1c234890",
     name: "Harborview Institute",
-    image: "https://example.com/images/harborview-institute.jpg",
+    image:
+      "https://cdn.britannica.com/85/13085-050-C2E88389/Corpus-Christi-College-University-of-Cambridge-England.jpg",
     galleryImages: [
       "https://example.com/images/graduates-harborview-2023.jpg",
       "https://example.com/images/harborview-commencement-2024.jpg",
@@ -372,7 +375,8 @@ const collegeData = [
   {
     _id: "66ab2e5f4g7h8c0i2d345901",
     name: "Crestwood Academy",
-    image: "https://example.com/images/crestwood-academy.jpg",
+    image:
+      "https://static.independent.co.uk/2022/06/08/21/3f1c0f46776f76b5a239dfe8096df8f1Y29udGVudHNlYXJjaGFwaSwxNjU0Nzk1MzY2-2.67230106.jpg",
     galleryImages: [
       "https://example.com/images/graduates-crestwood-2023.jpg",
       "https://example.com/images/crestwood-graduation-2024.jpg",
@@ -495,7 +499,8 @@ const collegeData = [
   {
     _id: "66ab3f6g5h8i9d0j3e456012",
     name: "Maplewood University",
-    image: "https://example.com/images/maplewood-university.jpg",
+    image:
+      "https://www.timeshighereducation.com/student/sites/default/files/cbh_rhul_arch1_0026v1_1_0.jpg",
     galleryImages: [
       "https://example.com/images/graduates-maplewood-2023.jpg",
       "https://example.com/images/maplewood-graduation-2024.jpg",
@@ -617,7 +622,8 @@ const collegeData = [
   {
     _id: "66ab507h6i9j0e1k4f567123",
     name: "Oakridge College",
-    image: "https://example.com/images/oakridge-college.jpg",
+    image:
+      "https://images.shiksha.com/mediadata/images/articles/1744019588phpVCRWzS.jpeg",
     galleryImages: [
       "https://example.com/images/graduates-oakridge-2023.jpg",
       "https://example.com/images/oakridge-commencement-2024.jpg",
@@ -740,7 +746,8 @@ const collegeData = [
   {
     _id: "66ab618i7j0k1f2l5g678234",
     name: "Silverlake University",
-    image: "https://example.com/images/silverlake-university.jpg",
+    image:
+      "https://www.travelandleisure.com/thmb/E5szi7N2r1eN-8b3vkl5STvWz9o=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/notre-dame-university-COLLEGECAMP0421-039ce0bfd40b4e429b825c6fb6ebfaa6.jpg",
     galleryImages: [
       "https://example.com/images/graduates-silverlake-2023.jpg",
       "https://example.com/images/silverlake-graduation-2024.jpg",
@@ -861,7 +868,8 @@ const collegeData = [
   {
     _id: "66ab729j8k1l2g3m6h789345",
     name: "Pinecrest Institute",
-    image: "https://example.com/images/pinecrest-institute.jpg",
+    image:
+      "https://static.toiimg.com/thumb/msid-120576896,width-1070,height-580,imgsize-378465,resizemode-6,overlay-toi_sw,pt-32,y_pad-40/photo.jpg",
     galleryImages: [
       "https://example.com/images/graduates-pinecrest-2023.jpg",
       "https://example.com/images/pinecrest-commencement-2024.jpg",

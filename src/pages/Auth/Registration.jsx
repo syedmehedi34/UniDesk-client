@@ -6,6 +6,7 @@ import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import GoogleLogin from "./GoogleLogin";
+import FacebookLogin from "./FacebookLogin";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -137,6 +138,7 @@ const Registration = () => {
           </motion.button>
 
           <GoogleLogin setError={setError} />
+          <FacebookLogin setError={setError} />
         </form>
 
         <motion.p

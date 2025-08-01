@@ -3,6 +3,7 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   GoogleAuthProvider,
+  FacebookAuthProvider, // Adding FacebookAuthProvider for Facebook login
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -10,15 +11,20 @@ import {
   updateProfile,
   sendPasswordResetEmail,
 } from "firebase/auth";
+
 import { createContext, useContext, useEffect, useState } from "react";
+
 import app from "../firebase/firebase.init";
+
 import useAxiosPublic from "../hooks/useAxiosPublic";
+
 import Loader from "../components/Loader";
 
 export const AuthContext = createContext();
 
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
+const facebookProvider = new FacebookAuthProvider(); // Initializing FacebookAuthProvider
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -39,6 +45,11 @@ const AuthProvider = ({ children }) => {
   // Sign in with Google
   const signInWithGoogle = () => {
     return signInWithPopup(auth, googleProvider);
+  };
+
+  //?  Sign in with Facebook
+  const signInWithFacebook = () => {
+    return signInWithPopup(auth, facebookProvider);
   };
 
   // Logout user
@@ -64,20 +75,20 @@ const AuthProvider = ({ children }) => {
 
       // todo: need to update
       // if (currentUser?.email) {
-      //   const user = { email: currentUser.email };
-      //   axiosPublic
-      //     .post("/jwt", user, { withCredentials: true })
-      //     .then((res) => {
-      //       console.log("login token", res.data);
-      //       setLoading(false);
-      //     });
+      // const user = { email: currentUser.email };
+      // axiosPublic
+      // .post("/jwt", user, { withCredentials: true })
+      // .then((res) => {
+      // console.log("login token", res.data);
+      // setLoading(false);
+      // });
       // } else {
-      //   axiosPublic
-      //     .post("/logout", {}, { withCredentials: true })
-      //     .then((res) => {
-      //       console.log("logout data : ", res.data);
-      //       setLoading(false);
-      //     });
+      // axiosPublic
+      // .post("/logout", {}, { withCredentials: true })
+      // .then((res) => {
+      // console.log("logout data : ", res.data);
+      // setLoading(false);
+      // });
       // }
       setLoading(false); // Ensure loading stops after auth state resolves
     });
@@ -94,6 +105,7 @@ const AuthProvider = ({ children }) => {
     updateUser,
     loading,
     signInWithGoogle,
+    signInWithFacebook, // Adding Facebook login to authInfo
     resetPassword,
     setLoading,
   };

@@ -6,6 +6,7 @@ import { AuthContext } from "../../providers/AuthProvider";
 import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
 import GoogleLogin from "./GoogleLogin";
+import FacebookLogin from "./FacebookLogin";
 
 const Login = () => {
   const { signInUser, setUser, setLoginMail, setLoading } =
@@ -128,6 +129,7 @@ const Login = () => {
           </motion.button>
 
           <GoogleLogin setError={setError} />
+          <FacebookLogin setError={setError} />
         </form>
 
         <motion.p

@@ -13,6 +13,7 @@ import {
 import { createContext, useContext, useEffect, useState } from "react";
 import app from "../firebase/firebase.init";
 import useAxiosPublic from "../hooks/useAxiosPublic";
+import Loader from "../components/Loader";
 
 export const AuthContext = createContext();
 
@@ -99,7 +100,7 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={authInfo}>
-      {loading ? <div className="loader">Loading...</div> : children}
+      {loading ? <Loader /> : children}
     </AuthContext.Provider>
   );
 };

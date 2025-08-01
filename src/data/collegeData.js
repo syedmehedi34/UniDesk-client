@@ -1,4 +1,4 @@
-[
+const collegeData = [
   {
     _id: "66aa9f2b1c4d5e7f9a123456",
     name: "Springfield University",
@@ -982,3 +982,4 @@
     },
   },
 ];
+export default collegeData;

@@ -7,6 +7,7 @@ import Error from "../pages/Error";
 import ProtectedRoute from "./ProtectedRoute";
 import MyCollege from "../pages/MyCollege/MyCollege";
 import Profile from "../pages/Profile";
+import CollegePage from "../pages/CollegePage/CollegePage";
 
 export const router = createBrowserRouter([
   {
@@ -28,7 +29,7 @@ export const router = createBrowserRouter([
       // },
       {
         path: "/colleges",
-        element: <div>colleges Content</div>,
+        element: <CollegePage />,
       },
       {
         path: "/admission",

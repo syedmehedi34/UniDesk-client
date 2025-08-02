@@ -5,6 +5,7 @@ import useUniversities from "../../hooks/useUniversities";
 import TopColleges from "./TopColleges";
 import GraduateMoments from "./GraduateMoments";
 import ResearchPapers from "./ResearchPapers";
+import CollegeReviews from "./CollegeReviews";
 
 const Home = () => {
   const [universities, isLoadingUniversities] = useUniversities();
@@ -24,6 +25,7 @@ const Home = () => {
       />
       <GraduateMoments />
       <ResearchPapers />
+      <CollegeReviews />
     </div>
   );
 };

@@ -16,6 +16,7 @@ import {
   DollarSign,
 } from "lucide-react";
 import useUniversities from "../hooks/useUniversities";
+import Loader from "../components/Loader";
 
 const CollegeDetails = () => {
   const [universities, isLoadingUniversities] = useUniversities();
@@ -69,11 +70,7 @@ const CollegeDetails = () => {
   };
 
   if (!college) {
-    return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-2xl font-semibold text-gray-600">Loading...</div>
-      </div>
-    );
+    return <Loader />;
   }
 
   return (

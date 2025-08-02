@@ -10,7 +10,7 @@ import SearchedColleges from "./SearchedColleges";
 
 const Home = () => {
   const [universities, isLoadingUniversities] = useUniversities();
-  const [showSearchedData, setShowSearchedData] = useState(true);
+  const [showSearchedData, setShowSearchedData] = useState(false);
   const [searchedCollegesList, setSearchedCollegeList] = useState("");
 
   const onSearch = (query) => {

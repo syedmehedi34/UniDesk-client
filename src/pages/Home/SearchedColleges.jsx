@@ -7,6 +7,7 @@ import {
   FaDollarSign,
   FaLink,
 } from "react-icons/fa";
+import { Link } from "react-router";
 
 // Animation variants for the card
 const cardVariants = {
@@ -91,16 +92,25 @@ const SearchedColleges = ({ searchedCollegesList }) => {
                 </div>
 
                 {/* Website Link */}
-                <div className="flex items-center">
-                  <FaLink className="text-blue-500 mr-2" />
-                  <a
-                    href={college.contact.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:text-blue-800 font-medium"
-                  >
-                    Visit Website
-                  </a>
+                <div className="flex items-center justify-between">
+                  <Link to={`/colleges/${college._id}`}>
+                    <button className="btn bg-teal-600 rounded-4xl text-white">
+                      View Details
+                    </button>
+                  </Link>
+
+                  <div className="flex items-center">
+                    <FaLink className="text-blue-500 mr-2" />
+
+                    <a
+                      href={college.contact.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 font-medium"
+                    >
+                      Visit Website
+                    </a>
+                  </div>
                 </div>
               </div>
             </motion.div>

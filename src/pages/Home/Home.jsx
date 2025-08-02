@@ -3,6 +3,8 @@ import React from "react";
 import Header from "./Header";
 import useUniversities from "../../hooks/useUniversities";
 import TopColleges from "./TopColleges";
+import GraduateMoments from "./GraduateMoments";
+import ResearchPapers from "./ResearchPapers";
 
 const Home = () => {
   const [universities, isLoadingUniversities] = useUniversities();
@@ -20,6 +22,8 @@ const Home = () => {
         universities={universities}
         isLoadingUniversities={isLoadingUniversities}
       />
+      <GraduateMoments />
+      <ResearchPapers />
     </div>
   );
 };

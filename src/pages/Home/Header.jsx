@@ -30,7 +30,7 @@ const Header = ({ onSearch }) => {
   };
 
   return (
-    <header className="relative bg-gradient-to-r from-blue-600 to-purple-600 text-white min-h-[50vh] flex items-center justify-center py-12">
+    <header className="relative bg-gradient-to-r from-teal-700 to-teal-500 text-white min-h-[50vh] flex items-center justify-center py-12">
       {/* Background Overlay (Optional Image) */}
       <div className="absolute inset-0 bg-black/20 z-0" />
 

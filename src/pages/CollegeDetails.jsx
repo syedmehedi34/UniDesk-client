@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router";
+import { useParams } from "react-router";
 import { motion } from "framer-motion";
 import {
   FaMapMarkerAlt,
@@ -23,8 +23,8 @@ import {
 } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import "leaflet/dist/leaflet.css"; // Import Leaflet CSS
-import L from "leaflet"; // For custom marker icon
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 
 import useUniversities from "../hooks/useUniversities";
 import Loader from "../components/Loader";
@@ -62,36 +62,28 @@ const CollegeDetails = () => {
 
   // Animation variants
   const containerVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
 
   const sectionVariants = {
-    hidden: { opacity: 0, x: -30 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.5, delay: 0.2 } },
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.4 } },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: (i) => ({
-      opacity: 1,
-      scale: 1,
-      transition: { delay: i * 0.2, duration: 0.5, ease: "easeOut" },
-    }),
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.4 } },
   };
 
   // Map configuration
   const mapContainerStyle = {
     width: "100%",
-    height: "400px",
-    borderRadius: "12px",
+    height: "300px",
+    borderRadius: "8px",
   };
 
-  if (!college) {
+  if (!college || isLoadingUniversities) {
     return <Loader />;
   }
 
@@ -100,23 +92,24 @@ const CollegeDetails = () => {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="min-h-screen bg-gradient-to-b from-blue-100 to-gray-50 py-16 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8"
     >
-      <div className="max-w-6xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden">
+      <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
         {/* Header Section */}
         <div className="relative">
           <img
             src={college.image}
             alt={college.name}
-            className="w-full h-96 object-cover"
+            className="w-full h-64 object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/70 to-transparent flex items-end justify-between p-8">
-            <h1 className="text-5xl font-extrabold text-white tracking-tight">
-              {college.name}
-            </h1>
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent flex items-end p-6">
+            <div className="flex-1">
+              <h1 className="text-3xl font-bold text-white">{college.name}</h1>
+              <p className="text-gray-200">{college.location}</p>
+            </div>
             <button
               onClick={() => openModal(college)}
-              className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition-colors duration-300 shadow-lg"
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center text-sm font-medium"
             >
               Apply Now <FaArrowRight className="ml-2" />
             </button>
@@ -124,212 +117,64 @@ const CollegeDetails = () => {
         </div>
 
         {/* Main Content */}
-        <div className="p-10 space-y-12">
-          {/* Basic Info */}
+        <div className="p-6 space-y-8">
+          {/* Overview */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
             animate="visible"
           >
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
-              <FaFlask className="h-7 w-7 text-blue-500 mr-3" />
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
               Overview
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-xl">
-              <p className="text-gray-700 flex items-center text-lg">
-                <FaMapMarkerAlt className="h-6 w-6 text-red-500 mr-3" />
-                <span className="font-medium">Location:</span>{" "}
-                {college.location}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <p className="text-gray-600 flex items-center">
+                <FaStar className="h-4 w-4 text-yellow-500 mr-2" />
+                Rating: {college.rating}/5
               </p>
-              <p className="text-gray-700 flex items-center text-lg">
-                <FaStar className="h-6 w-6 text-yellow-400 mr-3" />
-                <span className="font-medium">Rating:</span> {college.rating}/5
+              <p className="text-gray-600 flex items-center">
+                <FaCalendarAlt className="h-4 w-4 text-blue-500 mr-2" />
+                Admission: {college.admissionDates.start} -{" "}
+                {college.admissionDates.end}
               </p>
-              <p className="text-gray-700 flex items-center text-lg">
-                <FaCalendarAlt className="h-6 w-6 text-green-500 mr-3" />
-                <span className="font-medium">Admission Period:</span>{" "}
-                {college.admissionDates.start} to {college.admissionDates.end}
+              <p className="text-gray-600 flex items-center">
+                <FaFlask className="h-4 w-4 text-blue-500 mr-2" />
+                Research Works: {college.numberOfResearchWorks}
               </p>
-              <p className="text-gray-700 flex items-center text-lg">
-                <FaFlask className="h-6 w-6 text-blue-500 mr-3" />
-                <span className="font-medium">Research Works:</span>{" "}
-                {college.numberOfResearchWorks}
-              </p>
-              <p className="text-gray-700 flex items-center text-lg">
-                <FaUsers className="h-6 w-6 text-purple-500 mr-3" />
-                <span className="font-medium">
-                  Enrollment:
-                </span> Undergraduate:{" "}
-                {college.enrollment.undergraduate.toLocaleString()}, Graduate:{" "}
-                {college.enrollment.graduate.toLocaleString()}
+              <p className="text-gray-600 flex items-center">
+                <FaUsers className="h-4 w-4 text-blue-500 mr-2" />
+                Enrollment: {college.enrollment.undergraduate.toLocaleString()}{" "}
+                (UG), {college.enrollment.graduate.toLocaleString()} (G)
               </p>
             </div>
           </motion.div>
 
-          {/* Gallery Images */}
+          {/* Programs */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
             animate="visible"
           >
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
-              <FaImages className="h-7 w-7 text-purple-500 mr-3" />
-              Gallery
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+              Programs
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {college.galleryImages.map((img, index) => (
-                <motion.img
-                  key={index}
-                  src={img || "https://via.placeholder.com/150"}
-                  alt={`Gallery image ${index + 1}`}
-                  className="w-full h-48 object-cover rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
-                  variants={itemVariants}
-                  custom={index}
-                />
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Campus Location with Leaflet Map */}
-          <motion.div
-            variants={sectionVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
-              <FaMapMarkerAlt className="h-7 w-7 text-red-500 mr-3" />
-              Campus Location
-            </h2>
-            <div className="bg-gray-50 p-6 rounded-xl">
-              <p className="text-gray-700 mb-4 text-lg">
-                <span className="font-medium">Address:</span>{" "}
-                {college.campusLocation.address}
-              </p>
-              <div style={mapContainerStyle}>
-                <MapContainer
-                  center={[
-                    college.campusLocation.location.lat,
-                    college.campusLocation.location.lng,
-                  ]}
-                  zoom={15}
-                  style={mapContainerStyle}
-                >
-                  <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  />
-                  <Marker
-                    position={[
-                      college.campusLocation.location.lat,
-                      college.campusLocation.location.lng,
-                    ]}
-                  >
-                    <Popup>{college.name}</Popup>
-                  </Marker>
-                </MapContainer>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Events Section */}
-          <motion.div
-            variants={sectionVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
-              <FaCalendarAlt className="h-6 w-6 text-green-500 mr-3" />
-              Events
-            </h2>
-            <div className="space-y-6">
-              {college.events.map((event, index) => (
+            <div className="space-y-4">
+              {college.programs.map((program, index) => (
                 <motion.div
                   key={index}
-                  className="p-6 bg-blue-50 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
                   variants={itemVariants}
-                  custom={index}
+                  className="p-4 bg-gray-50 rounded-md"
                 >
-                  <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-                    <FaCalendarAlt className="h-6 w-6 text-green-500 mr-3" />
-                    {event.name}
+                  <h3 className="text-lg font-medium text-gray-900 flex items-center">
+                    <FaBook className="h-4 w-4 text-blue-500 mr-2" />
+                    {program.name}
                   </h3>
-                  <p className="text-sm text-gray-600 mt-1">
-                    <span className="font-medium">Date:</span> {event.date}
+                  <p className="text-sm text-gray-600">
+                    Degree: {program.degreeType}
                   </p>
-                  <p className="text-gray-700 mt-2">{event.description}</p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Research History */}
-          <motion.div
-            variants={sectionVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
-              <FaBook className="h-7 w-7 text-blue-500 mr-3" />
-              Research History
-            </h2>
-            <div className="space-y-6">
-              {college.researchHistory.map((research, index) => (
-                <motion.div
-                  key={index}
-                  className="p-6 bg-blue-50 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
-                  variants={itemVariants}
-                  custom={index}
-                >
-                  <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-                    <FaBook className="h-6 w-6 text-blue-500 mr-3" />
-                    {research.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 mt-1">
-                    <span className="font-medium">Authors:</span>{" "}
-                    {research.authors.join(", ")}
+                  <p className="text-sm text-gray-600">
+                    Duration: {program.duration}
                   </p>
-                  <p className="text-sm text-gray-600 mt-1">
-                    <span className="font-medium">Publication Date:</span>{" "}
-                    {research.publicationDate}
-                  </p>
-                  <p className="text-gray-700 mt-2">
-                    <a
-                      href={research.link}
-                      className="text-blue-600 hover:underline"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      View Research
-                    </a>
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Sports Section */}
-          <motion.div
-            variants={sectionVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
-              <FaTrophy className="h-7 w-7 text-orange-500 mr-3" />
-              Sports
-            </h2>
-            <div className="space-y-6">
-              {college.sports.map((sport, index) => (
-                <motion.div
-                  key={index}
-                  className="p-6 bg-blue-50 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
-                  variants={itemVariants}
-                  custom={index}
-                >
-                  <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-                    <FaTrophy className="h-6 w-6 text-orange-500 mr-3" />
-                    {sport.name}
-                  </h3>
-                  <p className="text-gray-700 mt-2">{sport.description}</p>
                 </motion.div>
               ))}
             </div>
@@ -341,14 +186,129 @@ const CollegeDetails = () => {
             initial="hidden"
             animate="visible"
           >
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
-              <FaBook className="h-7 w-7 text-blue-500 mr-3" />
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
               Admission Process
             </h2>
-            <div className="p-6 bg-gray-50 rounded-xl">
-              <p className="text-gray-700 text-lg">
-                {college.admissionProcess}
-              </p>
+            <p className="text-gray-600">{college.admissionProcess}</p>
+          </motion.div>
+
+          {/* Facilities */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+              Facilities
+            </h2>
+            <div className="space-y-4">
+              {college.facilities.map((facility, index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  className="p-4 bg-gray-50 rounded-md"
+                >
+                  <h3 className="text-lg font-medium text-gray-900 flex items-center">
+                    <FaBuilding className="h-4 w-4 text-blue-500 mr-2" />
+                    {facility.name}
+                  </h3>
+                  <p className="text-gray-600 text-sm">
+                    {facility.description}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Research History */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+              Research History
+            </h2>
+            <div className="space-y-4">
+              {college.researchHistory.map((research, index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  className="p-4 bg-gray-50 rounded-md"
+                >
+                  <h3 className="text-lg font-medium text-gray-900 flex items-center">
+                    <FaBook className="h-4 w-4 text-blue-500 mr-2" />
+                    {research.title}
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    Authors: {research.authors.join(", ")}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Published: {research.publicationDate}
+                  </p>
+                  <a
+                    href={research.link}
+                    className="text-blue-600 hover:underline text-sm"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View Research
+                  </a>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Sports */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+              Sports
+            </h2>
+            <div className="space-y-4">
+              {college.sports.map((sport, index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  className="p-4 bg-gray-50 rounded-md"
+                >
+                  <h3 className="text-lg font-medium text-gray-900 flex items-center">
+                    <FaTrophy className="h-4 w-4 text-blue-500 mr-2" />
+                    {sport.name}
+                  </h3>
+                  <p className="text-gray-600 text-sm">{sport.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Events */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+              Events
+            </h2>
+            <div className="space-y-4">
+              {college.events.map((event, index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  className="p-4 bg-gray-50 rounded-md"
+                >
+                  <h3 className="text-lg font-medium text-gray-900 flex items-center">
+                    <FaCalendarAlt className="h-4 w-4 text-blue-500 mr-2" />
+                    {event.name}
+                  </h3>
+                  <p className="text-sm text-gray-600">Date: {event.date}</p>
+                  <p className="text-gray-600 text-sm">{event.description}</p>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
 
@@ -358,113 +318,43 @@ const CollegeDetails = () => {
             initial="hidden"
             animate="visible"
           >
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
-              <FaStar className="h-7 w-7 text-yellow-400 mr-3" />
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
               Reviews
             </h2>
-            <div className="space-y-6">
+            <div className="space-y-4">
               {college.reviews.map((review, index) => (
                 <motion.div
                   key={index}
-                  className="p-6 bg-blue-50 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
                   variants={itemVariants}
-                  custom={index}
+                  className="p-4 bg-gray-50 rounded-md"
                 >
-                  <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-                    <FaStar className="h-6 w-6 text-yellow-400 mr-3" />
+                  <h3 className="text-lg font-medium text-gray-900 flex items-center">
+                    <FaStar className="h-4 w-4 text-yellow-500 mr-2" />
                     Rating: {review.rating}/5
                   </h3>
-                  <p className="text-sm text-gray-600 mt-1">
-                    <span className="font-medium">Date:</span> {review.date}
-                  </p>
-                  <p className="text-gray-700 mt-2">{review.comment}</p>
+                  <p className="text-sm text-gray-600">Date: {review.date}</p>
+                  <p className="text-gray-600 text-sm">{review.comment}</p>
                 </motion.div>
               ))}
             </div>
           </motion.div>
 
-          {/* Facilities */}
+          {/* Additional Details */}
           <motion.div
             variants={sectionVariants}
             initial="hidden"
             animate="visible"
           >
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
-              <FaBuilding className="h-7 w-7 text-teal-500 mr-3" />
-              Facilities
-            </h2>
-            <div className="space-y-6">
-              {college.facilities.map((facility, index) => (
-                <motion.div
-                  key={index}
-                  className="p-6 bg-blue-50 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
-                  variants={itemVariants}
-                  custom={index}
-                >
-                  <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-                    <FaBuilding className="h-6 w-6 text-teal-500 mr-3" />
-                    {facility.name}
-                  </h3>
-                  <p className="text-gray-700 mt-2">{facility.description}</p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Programs */}
-          <motion.div
-            variants={sectionVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
-              <FaBook className="h-7 w-7 text-blue-500 mr-3" />
-              Programs
-            </h2>
-            <div className="space-y-6">
-              {college.programs.map((program, index) => (
-                <motion.div
-                  key={index}
-                  className="p-6 bg-blue-50 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
-                  variants={itemVariants}
-                  custom={index}
-                >
-                  <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-                    <FaBook className="h-6 w-6 text-blue-500 mr-3" />
-                    {program.name}
-                  </h3>
-                  <p className="text-sm text-gray-600 mt-1">
-                    <span className="font-medium">Degree Type:</span>{" "}
-                    {program.degreeType}
-                  </p>
-                  <p className="text-sm text-gray-600 mt-1">
-                    <span className="font-medium">Duration:</span>{" "}
-                    {program.duration}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Additional Info */}
-          <motion.div
-            variants={sectionVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
-              <FaGlobe className="h-7 w-7 text-teal-500 mr-3" />
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
               Additional Details
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-6 rounded-xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-                  <FaEnvelope className="h-6 w-6 text-blue-500 mr-3" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
                   Contact
                 </h3>
-                <p className="text-gray-700 flex items-center mt-3 text-lg">
-                  <FaEnvelope className="h-6 w-6 text-blue-500 mr-3" />
-                  <span className="font-medium">Email:</span>{" "}
+                <p className="text-gray-600 flex items-center text-sm">
+                  <FaEnvelope className="h-4 w-4 text-blue-500 mr-2" />
                   <a
                     href={`mailto:${college.contact.email}`}
                     className="text-blue-600 hover:underline"
@@ -472,14 +362,12 @@ const CollegeDetails = () => {
                     {college.contact.email}
                   </a>
                 </p>
-                <p className="text-gray-700 flex items-center mt-2 text-lg">
-                  <FaPhone className="h-6 w-6 text-green-500 mr-3" />
-                  <span className="font-medium">Phone:</span>{" "}
+                <p className="text-gray-600 flex items-center text-sm mt-2">
+                  <FaPhone className="h-4 w-4 text-blue-500 mr-2" />
                   {college.contact.phone}
                 </p>
-                <p className="text-gray-700 flex items-center mt-2 text-lg">
-                  <FaGlobe className="h-6 w-6 text-teal-500 mr-3" />
-                  <span className="font-medium">Website:</span>{" "}
+                <p className="text-gray-600 flex items-center text-sm mt-2">
+                  <FaGlobe className="h-4 w-4 text-blue-500 mr-2" />
                   <a
                     href={college.contact.website}
                     className="text-blue-600 hover:underline"
@@ -491,28 +379,25 @@ const CollegeDetails = () => {
                 </p>
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-                  <FaDollarSign className="h-6 w-6 text-green-500 mr-3" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
                   Tuition
                 </h3>
-                <p className="text-gray-700 flex items-center mt-3 text-lg">
-                  <GoDotFill size={15} />
-                  <span className="font-medium ml-2">Undergraduate:</span> $
+                <p className="text-gray-600 flex items-center text-sm">
+                  <GoDotFill className="h-4 w-4 mr-2" />
+                  Undergraduate: $
                   {college.tuition.undergraduate.toLocaleString()}
                 </p>
-                <p className="text-gray-700 flex items-center mt-2 text-lg">
-                  <GoDotFill size={15} />
-                  <span className="font-medium ml-2">Graduate:</span> $
-                  {college.tuition.graduate.toLocaleString()}
+                <p className="text-gray-600 flex items-center text-sm mt-2">
+                  <GoDotFill className="h-4 w-4 mr-2" />
+                  Graduate: ${college.tuition.graduate.toLocaleString()}
                 </p>
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-gray-900 flex items-center">
-                  <FaFacebook className="h-6 w-6 text-blue-600 mr-3" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
                   Social Media
                 </h3>
-                <p className="text-gray-700 flex items-center mt-3 text-lg">
-                  <FaFacebook className="h-6 w-6 text-blue-600 mr-3" />
+                <p className="text-gray-600 flex items-center text-sm">
+                  <FaFacebook className="h-4 w-4 text-blue-600 mr-2" />
                   <a
                     href={college.socialMedia.facebook}
                     className="text-blue-600 hover:underline"
@@ -522,8 +407,8 @@ const CollegeDetails = () => {
                     Facebook
                   </a>
                 </p>
-                <p className="text-gray-700 flex items-center mt-2 text-lg">
-                  <FaTwitter className="h-6 w-6 text-blue-400 mr-3" />
+                <p className="text-gray-600 flex items-center text-sm mt-2">
+                  <FaTwitter className="h-4 w-4 text-blue-400 mr-2" />
                   <a
                     href={college.socialMedia.twitter}
                     className="text-blue-600 hover:underline"
@@ -533,8 +418,8 @@ const CollegeDetails = () => {
                     Twitter
                   </a>
                 </p>
-                <p className="text-gray-700 flex items-center mt-2 text-lg">
-                  <FaInstagram className="h-6 w-6 text-pink-500 mr-3" />
+                <p className="text-gray-600 flex items-center text-sm mt-2">
+                  <FaInstagram className="h-4 w-4 text-pink-500 mr-2" />
                   <a
                     href={college.socialMedia.instagram}
                     className="text-blue-600 hover:underline"
@@ -545,6 +430,43 @@ const CollegeDetails = () => {
                   </a>
                 </p>
               </div>
+            </div>
+          </motion.div>
+
+          {/* Campus Location */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+              Campus Location
+            </h2>
+            <p className="text-gray-600 text-sm mb-4">
+              {college.campusLocation.address}
+            </p>
+            <div style={mapContainerStyle}>
+              <MapContainer
+                center={[
+                  college.campusLocation.location.lat,
+                  college.campusLocation.location.lng,
+                ]}
+                zoom={15}
+                style={mapContainerStyle}
+              >
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                />
+                <Marker
+                  position={[
+                    college.campusLocation.location.lat,
+                    college.campusLocation.location.lng,
+                  ]}
+                >
+                  <Popup>{college.name}</Popup>
+                </Marker>
+              </MapContainer>
             </div>
           </motion.div>
         </div>

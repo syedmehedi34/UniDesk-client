@@ -10,6 +10,7 @@ import Profile from "../pages/Profile";
 import CollegePage from "../pages/CollegePage";
 import CollegeDetails from "../pages/CollegeDetails";
 import AdmissionPage from "../pages/AdmissionPage";
+import MyCollegeDetails from "../pages/MyCollegeDetails";
 
 export const router = createBrowserRouter([
   {
@@ -47,6 +48,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <MyCollege />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "//my-college/details/:_id",
+        element: (
+          <ProtectedRoute>
+            <MyCollegeDetails />
           </ProtectedRoute>
         ),
       },

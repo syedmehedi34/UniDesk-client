@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router";
+import { Link, NavLink } from "react-router";
 import { useAuth } from "../providers/AuthProvider";
 import useUsers from "../hooks/useUsers";
 
@@ -41,39 +41,39 @@ const Navbar = () => {
 
           {/* Middle: Nav Links (Desktop) */}
           <div className="hidden md:flex space-x-8">
-            <Link
+            <NavLink
               to="/"
               className={`hover:text-blue-300 transition ${
                 isScrolled ? "text-gray-800" : "text-white"
               }`}
             >
               Home
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/colleges"
               className={`hover:text-blue-300 transition ${
                 isScrolled ? "text-gray-800" : "text-white"
               }`}
             >
               Colleges
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/admission"
               className={`hover:text-blue-300 transition ${
                 isScrolled ? "text-gray-800" : "text-white"
               }`}
             >
               Admission
-            </Link>
+            </NavLink>
             {user && (
-              <Link
+              <NavLink
                 to="/my-college"
                 className={`hover:text-blue-300 transition ${
                   isScrolled ? "text-gray-800" : "text-white"
                 }`}
               >
                 My College
-              </Link>
+              </NavLink>
             )}
           </div>
 

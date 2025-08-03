@@ -5,3 +5,21 @@
 .lobster-regular {
   font-family: "Lobster" !important;
 }
+
+.active {
+  @apply relative text-black font-semibold;
+}
+
+.active::after {
+  content: "";
+  @apply absolute left-0 bottom-0 w-full h-[2px] bg-black;
+  animation: underline-slide 0.3s ease-in-out forwards;
+}
+@keyframes underline-slide {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}

@@ -20,8 +20,20 @@ import { GoDotFill } from "react-icons/go";
 
 import useUniversities from "../hooks/useUniversities";
 import Loader from "../components/Loader";
+import useAdmissionModal from "../hooks/useAdmissionModal";
+import AdmissionModal from "../components/AdmissionModal";
 
 const CollegeDetails = () => {
+  const {
+    isModalOpen,
+    selectedUniversity,
+    formData,
+    handleInputChange,
+    handleSubmit,
+    openModal,
+    closeModal,
+  } = useAdmissionModal();
+
   const [universities, isLoadingUniversities] = useUniversities();
   const { collegeId } = useParams();
   const [college, setCollege] = useState(null);
@@ -95,11 +107,14 @@ const CollegeDetails = () => {
             <h1 className="text-5xl font-extrabold text-white tracking-tight">
               {college.name}
             </h1>
-            <Link to={`/admission/${college._id}`}>
-              <button className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition-colors duration-300 shadow-lg">
-                Apply Now <FaArrowRight className="ml-2" />
-              </button>
-            </Link>
+            <button
+              onClick={() => {
+                openModal(college);
+              }}
+              className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition-colors duration-300 shadow-lg"
+            >
+              Apply Now <FaArrowRight className="ml-2" />
+            </button>
           </div>
         </div>
 
@@ -285,13 +300,18 @@ const CollegeDetails = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Modal */}
+      <AdmissionModal
+        isModalOpen={isModalOpen}
+        selectedUniversity={selectedUniversity}
+        closeModal={closeModal}
+        formData={formData}
+        handleInputChange={handleInputChange}
+        handleSubmit={handleSubmit}
+      />
     </motion.div>
   );
 };
 
 export default CollegeDetails;
-
-// images, and college names. admission process, events details, research works, and sports categories in a detailed way.
-// events” and “sports” facilities.
-
-// admission route ->

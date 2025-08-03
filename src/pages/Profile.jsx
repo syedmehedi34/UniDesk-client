@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import useUsers from "../hooks/useUsers";
 import useAxiosPublic from "../hooks/useAxiosPublic";
 import { toast } from "react-toastify";
+import Loader from "../components/Loader";
 
 const initialData = {
   photoURL: "https://img.icons8.com/?size=100&id=83190&format=png&color=000000",
@@ -116,11 +117,7 @@ const Profile = () => {
   };
 
   if (isLoadingUserData) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-gray-600">Loading...</div>
-      </div>
-    );
+    return <Loader />;
   }
 
   return (

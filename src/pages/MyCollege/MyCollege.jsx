@@ -10,6 +10,7 @@ import {
   CalendarIcon,
   MapPinIcon,
 } from "@heroicons/react/24/outline";
+import Loader from "../../components/Loader";
 
 const MyCollege = () => {
   const [userColleges, isLoading] = useAdmissionApplications();
@@ -22,7 +23,7 @@ const MyCollege = () => {
       </h1>
 
       {isLoading ? (
-        <div className="text-center text-gray-600">Loading...</div>
+        <Loader />
       ) : !Array.isArray(userColleges) || userColleges.length === 0 ? (
         <div className="text-center text-gray-600">
           No college applications found.

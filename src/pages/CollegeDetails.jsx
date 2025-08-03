@@ -149,6 +149,28 @@ const CollegeDetails = () => {
             </div>
           </motion.div>
 
+          {/* Gallery */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+              Gallery
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {college.galleryImages.map((img, index) => (
+                <motion.img
+                  key={index}
+                  src={img || "https://via.placeholder.com/150"}
+                  alt={`Gallery image ${index + 1}`}
+                  className="w-full h-32 object-cover rounded-md"
+                  variants={itemVariants}
+                />
+              ))}
+            </div>
+          </motion.div>
+
           {/* Programs */}
           <motion.div
             variants={sectionVariants}

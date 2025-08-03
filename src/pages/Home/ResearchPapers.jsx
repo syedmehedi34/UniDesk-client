@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
+import { FaBook } from "react-icons/fa";
 
 // Sample hook to fetch research papers (replace with your actual API call)
 const useResearchPapers = () => {
@@ -109,13 +110,14 @@ const useResearchPapers = () => {
 
 // Skeleton loader component for research papers
 const SkeletonPaperCard = () => (
-  <div className="bg-white rounded-xl shadow-lg overflow-hidden animate-pulse">
-    <div className="p-6">
-      <div className="h-6 bg-gray-300 rounded w-3/4 mb-2" />
-      <div className="h-4 bg-gray-300 rounded w-1/2 mb-2" />
-      <div className="h-4 bg-gray-300 rounded w-2/3 mb-4" />
-      <div className="h-8 bg-blue-300 rounded-full w-24" />
+  <div className="bg-white rounded-md shadow-sm p-4 animate-pulse">
+    <div className="flex items-center mb-3">
+      <div className="h-4 w-4 bg-gray-200 rounded-full mr-2" />
+      <div className="h-5 bg-gray-200 rounded w-3/4" />
     </div>
+    <div className="h-4 bg-gray-200 rounded w-1/2 mb-2" />
+    <div className="h-4 bg-gray-200 rounded w-2/3 mb-3" />
+    <div className="h-6 bg-blue-200 rounded-md w-20" />
   </div>
 );
 
@@ -126,31 +128,30 @@ const ResearchPapers = () => {
 
   // Animation variants for cards
   const cardVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0, y: 20 },
     visible: (i) => ({
       opacity: 1,
       y: 0,
       transition: {
-        delay: i * 0.2,
-        duration: 0.5,
+        delay: i * 0.1,
+        duration: 0.4,
         ease: "easeOut",
       },
     }),
     hover: {
-      scale: 1.05,
-      boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.2)",
-      transition: { duration: 0.3 },
+      scale: 1.02,
+      transition: { duration: 0.2 },
     },
   };
 
   if (isLoading) {
     return (
-      <section className="py-12 bg-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-8">
+      <section className="py-8 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl text-center font-semibold text-gray-900 mb-6">
             Student Research Papers
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {[...Array(6)].map((_, index) => (
               <SkeletonPaperCard key={index} />
             ))}
@@ -162,26 +163,24 @@ const ResearchPapers = () => {
 
   if (!papers.length) {
     return (
-      <section className="py-12 bg-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-8">
+      <section className="py-8 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl text-center font-semibold text-gray-900 mb-6">
             Student Research Papers
           </h2>
-          <p className="text-xl text-gray-600 text-center">
-            No research papers found.
-          </p>
+          <p className="text-gray-600">No research papers found.</p>
         </div>
       </section>
     );
   }
 
   return (
-    <section className="py-12 bg-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-8">
+    <section className="py-8 bg-gray-50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-3xl text-center font-semibold text-gray-900 mb-6">
           Student Research Papers
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {visiblePapers.map((paper, index) => (
             <motion.div
               key={paper.id}
@@ -190,50 +189,51 @@ const ResearchPapers = () => {
               animate="visible"
               whileHover="hover"
               variants={cardVariants}
-              className="bg-white rounded-xl shadow-lg overflow-hidden"
+              className="bg-white rounded-md shadow-sm p-4"
             >
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              <div className="flex items-center mb-3">
+                <FaBook className="h-4 w-4 text-blue-500 mr-2" />
+                <h3 className="text-base font-medium text-gray-900">
                   {paper.title}
                 </h3>
-                <p className="text-sm text-gray-600 mb-2">
-                  <span className="font-semibold">Authors:</span>{" "}
-                  {paper.authors.join(", ")}
-                </p>
-                <p className="text-sm text-gray-600 mb-2">
-                  <span className="font-semibold">Source:</span> {paper.source}
-                </p>
-                <p className="text-sm text-gray-600 mb-4">
-                  <span className="font-semibold">Published:</span>{" "}
-                  {paper.published}
-                </p>
-                <a
-                  href={paper.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors duration-300"
-                  aria-label={`Read research paper: ${paper.title}`}
-                >
-                  Read Paper
-                </a>
               </div>
+              <p className="text-sm text-gray-600 mb-1">
+                <span className="font-medium">Authors:</span>{" "}
+                {paper.authors.join(", ")}
+              </p>
+              <p className="text-sm text-gray-600 mb-1">
+                <span className="font-medium">Source:</span> {paper.source}
+              </p>
+              <p className="text-sm text-gray-600 mb-3">
+                <span className="font-medium">Published:</span>{" "}
+                {paper.published}
+              </p>
+              <a
+                href={paper.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block bg-blue-600 text-white text-sm px-3 py-1 rounded-md hover:bg-blue-700 transition-colors"
+                aria-label={`Read research paper: ${paper.title}`}
+              >
+                Read Paper
+              </a>
             </motion.div>
           ))}
         </div>
         {papers.length > 6 && (
-          <div className="text-center mt-8">
+          <div className="text-center mt-6">
             <button
               onClick={() => setShowAll(!showAll)}
-              className="inline-flex items-center bg-gray-300 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition-colors duration-300"
+              className="inline-flex items-center bg-blue-600 text-white text-sm px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
               aria-label={showAll ? "Show fewer papers" : "Show more papers"}
             >
               {showAll ? (
                 <>
-                  Show Fewer <ChevronUpIcon className="w-5 h-5 ml-2" />
+                  Show Fewer <ChevronUpIcon className="w-4 h-4 ml-2" />
                 </>
               ) : (
                 <>
-                  Show More <ChevronDownIcon className="w-5 h-5 ml-2" />
+                  Show More <ChevronDownIcon className="w-4 h-4 ml-2" />
                 </>
               )}
             </button>

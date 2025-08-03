@@ -42,7 +42,7 @@ const Registration = () => {
             name: name,
             email: email,
             createdAt: user.metadata.creationTime,
-            college: "",
+            college: "No College Selected",
             photoURL: user.photoURL || "",
           })
           .then((response) => {

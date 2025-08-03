@@ -9,6 +9,26 @@ import {
 } from "@heroicons/react/24/solid";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 
+// 👉 Time ago utility function
+const getTimeAgo = (dateString) => {
+  const now = new Date();
+  const created = new Date(dateString);
+  const diff = Math.floor((now - created) / 1000); // in seconds
+
+  if (diff < 60) return `${diff} second${diff !== 1 ? "s" : ""} ago`;
+  if (diff < 3600)
+    return `${Math.floor(diff / 60)} min${diff < 120 ? "" : "s"} ago`;
+  if (diff < 86400)
+    return `${Math.floor(diff / 3600)} hour${diff < 7200 ? "" : "s"} ago`;
+  if (diff < 2592000)
+    return `${Math.floor(diff / 86400)} day${diff < 172800 ? "" : "s"} ago`;
+  if (diff < 31536000)
+    return `${Math.floor(diff / 2592000)} month${
+      diff < 5184000 ? "" : "s"
+    } ago`;
+  return `${Math.floor(diff / 31536000)} year${diff < 63072000 ? "" : "s"} ago`;
+};
+
 // Skeleton loader component for reviews
 const SkeletonReviewCard = () => (
   <div className="bg-white rounded-xl shadow-lg overflow-hidden animate-pulse min-w-[300px] mx-2">
@@ -160,10 +180,14 @@ const CollegeReviews = () => {
                     {review.universityName}
                   </h3>
 
-                  <p className="text-sm text-gray-600 mb-2">
+                  <p className="text-sm text-gray-600 mb-1">
                     <span className="font-semibold">Reviewer:</span>{" "}
                     {review.studentName}
                   </p>
+                  <p className="text-xs text-gray-500 italic mb-2">
+                    {getTimeAgo(review.createdAt)}
+                  </p>
+
                   <div className="flex items-center mb-2">
                     <span className="font-semibold text-sm text-gray-600 mr-2">
                       Rating:

@@ -12,10 +12,13 @@ import useAdmissionModal from "../hooks/useAdmissionModal";
 import AdmissionModal from "../components/AdmissionModal";
 import Loader from "../components/Loader";
 import { useAuth } from "../providers/AuthProvider";
+import useUsers from "../hooks/useUsers";
 
 const AdmissionPage = () => {
   const { user } = useAuth();
   const [universities, isLoadingUniversities] = useUniversities();
+  const [userData, isLoadingUserData, userDataRefetch] = useUsers();
+  // console.log(userData.college);
   const [searchTerm, setSearchTerm] = useState("");
   const {
     isModalOpen,

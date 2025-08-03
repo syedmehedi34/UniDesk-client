@@ -261,7 +261,7 @@ const Profile = () => {
                   />
                 ) : (
                   <span className="mt-1 text-base text-gray-800">
-                    {formData.college || "No college selected"}
+                    {formData.college || "--"}
                   </span>
                 )}
               </div>

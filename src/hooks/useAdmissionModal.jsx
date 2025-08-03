@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import useAxiosPublic from "./useAxiosPublic";
+import useUsers from "./useUsers";
+import { toast } from "react-toastify";
 
 const useAdmissionModal = () => {
+  const [userData, isLoadingUserData] = useUsers();
   const axiosPublic = useAxiosPublic();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUniversity, setSelectedUniversity] = useState(null);
@@ -15,6 +18,20 @@ const useAdmissionModal = () => {
     image: "",
     applicationSubmitted: "",
   });
+
+  // Sync formData with userData when userData changes
+  useEffect(() => {
+    if (userData && Object.keys(userData).length > 0) {
+      setFormData((prev) => ({
+        ...prev,
+        candidateName: userData.name || "",
+        candidateEmail: userData.email || "",
+        image: userData.photoURL || "",
+        address: userData.address || "",
+        dateOfBirth: userData.dob || "",
+      }));
+    }
+  }, [userData]);
 
   // Prevent background scrolling when modal is open
   useEffect(() => {
@@ -57,32 +74,29 @@ const useAdmissionModal = () => {
       ...university,
       ...updatedFormData,
     };
-    // console.log(applicationData);
-    //? send data to backend here
 
-    // const sendData = await axiosPublic.post(
-    //   "/apply-admission",
-    //   applicationData
-    // );
-    // alert("Application submitted successfully!");
-    // console.log(sendData);
     try {
       const response = await axiosPublic.post(
         "/apply-admission",
         applicationData
       );
       if (response.data) {
-        console.log(response.data);
-        alert("Application submitted successfully!");
+        toast.success("Application submitted successfully!", {
+          position: "top-left",
+          autoClose: 1500,
+          pauseOnHover: true,
+        });
       }
     } catch (error) {
       console.error("Error submitting application:", error);
-      alert("Failed to submit application. Please try again.");
+      toast.error("Failed to submit application. Please try again.", {
+        position: "top-left",
+        autoClose: 1500,
+        pauseOnHover: true,
+      });
     }
 
-    //?
     closeModal();
-    //?
   };
 
   // Open modal with selected university
@@ -100,13 +114,13 @@ const useAdmissionModal = () => {
     setIsModalOpen(false);
     setSelectedUniversity(null);
     setFormData({
-      candidateName: "",
-      subject: "",
-      candidateEmail: "",
+      candidateName: userData.name || "",
+      candidateEmail: userData.email || "",
+      image: userData.photoURL || "",
+      address: userData.address || "",
+      dateOfBirth: userData.dob || "",
       candidatePhone: "",
-      address: "",
-      dateOfBirth: "",
-      image: "",
+      subject: "",
       applicationSubmitted: "",
     });
   };
@@ -119,6 +133,7 @@ const useAdmissionModal = () => {
     handleSubmit,
     openModal,
     closeModal,
+    isLoadingUserData,
   };
 };
 

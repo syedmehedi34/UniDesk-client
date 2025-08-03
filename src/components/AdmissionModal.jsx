@@ -9,6 +9,7 @@ const AdmissionModal = ({
   formData,
   handleInputChange,
   handleSubmit,
+  onApplicationSubmitted, // Add callback prop
 }) => {
   // Animation variants for the modal
   const modalVariants = {
@@ -82,7 +83,10 @@ const AdmissionModal = ({
               </div>
 
               {/* Form */}
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form
+                onSubmit={(e) => handleSubmit(e, onApplicationSubmitted)}
+                className="space-y-4"
+              >
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
                     Candidate Name

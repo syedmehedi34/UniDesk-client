@@ -17,6 +17,9 @@ const useAdmissionModal = () => {
     dateOfBirth: "",
     image: "",
     applicationSubmitted: "",
+    universityId: "",
+    universityName: "",
+    universityLocation: "",
   });
 
   // Sync formData with userData when userData changes
@@ -56,29 +59,24 @@ const useAdmissionModal = () => {
   };
 
   // Handle form submission
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e, onApplicationSubmitted) => {
     e.preventDefault();
     const submissionDate = new Date().toISOString().split("T")[0]; // Get current date in YYYY-MM-DD format
     const updatedFormData = {
       ...formData,
       applicationSubmitted: submissionDate,
-    };
-
-    const university = {
       universityId: selectedUniversity._id,
       universityName: selectedUniversity.name,
       universityLocation: selectedUniversity.location,
+      studentEmail: formData.candidateEmail, // Ensure studentEmail matches candidateEmail
     };
 
-    const applicationData = {
-      ...university,
-      ...updatedFormData,
-    };
+    console.log("Submitting application:", updatedFormData); // Debug log
 
     try {
       const response = await axiosPublic.post(
         "/apply-admission",
-        applicationData
+        updatedFormData
       );
       if (response.data) {
         toast.success("Application submitted successfully!", {
@@ -86,6 +84,12 @@ const useAdmissionModal = () => {
           autoClose: 1500,
           pauseOnHover: true,
         });
+        // Call callback with the new application data
+        onApplicationSubmitted({
+          ...updatedFormData,
+          _id: response.data.insertedId || Date.now().toString(), // Use server _id or fallback
+        });
+        closeModal();
       }
     } catch (error) {
       console.error("Error submitting application:", error);
@@ -95,8 +99,6 @@ const useAdmissionModal = () => {
         pauseOnHover: true,
       });
     }
-
-    closeModal();
   };
 
   // Open modal with selected university
@@ -104,7 +106,10 @@ const useAdmissionModal = () => {
     setSelectedUniversity(university);
     setFormData((prev) => ({
       ...prev,
-      subject: university.programs[0]?.name || "", // Default to first program
+      subject: university.programs[0]?.name || "",
+      universityId: university._id,
+      universityName: university.name,
+      universityLocation: university.location,
     }));
     setIsModalOpen(true);
   };
@@ -122,6 +127,9 @@ const useAdmissionModal = () => {
       candidatePhone: "",
       subject: "",
       applicationSubmitted: "",
+      universityId: "",
+      universityName: "",
+      universityLocation: "",
     });
   };
 
@@ -130,7 +138,7 @@ const useAdmissionModal = () => {
     selectedUniversity,
     formData,
     handleInputChange,
-    handleSubmit,
+    handleSubmit: (e, callback) => handleSubmit(e, callback), // Allow callback injection
     openModal,
     closeModal,
     isLoadingUserData,

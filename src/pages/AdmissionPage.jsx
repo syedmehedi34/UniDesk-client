@@ -45,8 +45,9 @@ const AdmissionPage = () => {
             params: { studentEmail: userEmail },
           });
           setApplications(Array.isArray(response.data) ? response.data : []);
+          // console.log("Fetched applications:", response.data); // Debug log
         } catch (err) {
-          console.error("Error fetching applications:", err);
+          // console.error("Error fetching applications:", err);
           setError("Failed to load applications. Please try again later.");
           setApplications([]);
         } finally {
@@ -56,6 +57,16 @@ const AdmissionPage = () => {
     };
     fetchApplications();
   }, [userEmail, axiosPublic]);
+
+  // Callback to handle new application submission
+  const handleApplicationSubmitted = (newApplication) => {
+    console.log("New application submitted:", newApplication); // Debug log
+    setApplications((prevApplications) => {
+      const updatedApplications = [...prevApplications, newApplication];
+      // console.log("Updated applications state:", updatedApplications); // Debug log
+      return updatedApplications;
+    });
+  };
 
   // Filter universities based on search term
   const filteredUniversities = universities.filter((university) =>
@@ -128,9 +139,10 @@ const AdmissionPage = () => {
           {filteredUniversities.length > 0 ? (
             filteredUniversities.map((university, index) => {
               // Check if the user has already applied to this university
-              const hasApplied = applications.some(
-                (app) => app.universityId === university._id
-              );
+              const hasApplied = applications.some((app) => {
+                const match = app.universityId === university._id;
+                return match;
+              });
 
               return (
                 <motion.div
@@ -209,6 +221,7 @@ const AdmissionPage = () => {
         formData={formData}
         handleInputChange={handleInputChange}
         handleSubmit={handleSubmit}
+        onApplicationSubmitted={handleApplicationSubmitted} // Pass callback
       />
     </motion.div>
   );

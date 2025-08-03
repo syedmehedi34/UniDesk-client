@@ -42,6 +42,8 @@ const Registration = () => {
             name: name,
             email: email,
             createdAt: user.metadata.creationTime,
+            college: "",
+            photoURL: user.photoURL || "",
           })
           .then((response) => {
             console.log("User data saved to backend:", response.data);

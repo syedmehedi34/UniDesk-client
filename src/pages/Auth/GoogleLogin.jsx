@@ -4,21 +4,39 @@ import { motion } from "framer-motion";
 import { AuthContext } from "../../providers/AuthProvider";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const GoogleLogin = ({ setError }) => {
-  const { signInUser, signInWithGoogle, setUser, setLoginMail, setLoading } =
-    useContext(AuthContext);
+  const { signInWithGoogle, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const axiosPublic = useAxiosPublic();
 
   const handleGoogleSignIn = () => {
     signInWithGoogle()
       .then((result) => {
-        console.log(result.user);
+        const user = result.user;
+        setUser(user);
+        // Send user data to the backend using axiosPublic
+        axiosPublic
+          .post("/users", {
+            uid: user.uid,
+            name: user.displayName || "",
+            email: user.email || "",
+            createdAt: user.metadata.creationTime,
+            college: "",
+            photoURL: user.photoURL || "",
+          })
+          .then((response) => {
+            console.log("User data saved to backend:", response.data);
+          })
+          .catch((err) => {
+            console.error("Error saving user data:", err);
+          });
         toast.success("Logged in successfully!", {
           position: "top-left",
           autoClose: 1500,
           pauseOnHover: true,
-        }); // Success toast
+        });
         navigate(location?.state ? location.state : "/");
       })
       .catch((error) => {
@@ -27,7 +45,7 @@ const GoogleLogin = ({ setError }) => {
           position: "top-left",
           autoClose: 2000,
           pauseOnHover: true,
-        }); // Error toast
+        });
         console.error("ERROR", error.message);
       });
   };

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useContext, useState } from "react";
+import { useContext, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../providers/AuthProvider";
@@ -9,18 +9,19 @@ import GoogleLogin from "./GoogleLogin";
 import FacebookLogin from "./FacebookLogin";
 
 const Login = () => {
-  const { signInUser, setUser, setLoginMail, setLoading } =
-    useContext(AuthContext);
+  const { signInUser, setUser, setLoading } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState("");
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const formRef = useRef(null);
 
   const handleLogin = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    setLoginMail(email);
 
     signInUser(email, password)
       .then((result) => {
@@ -37,15 +38,28 @@ const Login = () => {
         navigate(location?.state ? location.state : "/");
       })
       .catch((error) => {
-        setError("Invalid email or password. Please try again.");
-        toast.error("Login failed. Please check your credentials.", {
+        console.error("Login error:", error.code, error.message); // Debug: Log detailed error
+        let errorMessage = "Invalid email or password. Please try again.";
+        if (error.code === "auth/user-not-found") {
+          errorMessage = "No account found with this email.";
+        } else if (error.code === "auth/wrong-password") {
+          errorMessage = "Incorrect password.";
+        } else if (error.code === "auth/invalid-email") {
+          errorMessage = "Invalid email format.";
+        }
+        setError(errorMessage);
+        toast.error(errorMessage, {
           position: "top-left",
           autoClose: 1500,
           pauseOnHover: true,
         });
-        console.error("ERROR", error.message);
         e.target.password.value = "";
       });
+  };
+
+  const handleDummyLogin = () => {
+    emailRef.current.value = "mehedi@hasan.test";
+    passwordRef.current.value = "mehEdi@123";
   };
 
   return (
@@ -56,11 +70,20 @@ const Login = () => {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md bg-white rounded-lg shadow-md p-8"
       >
-        <h2 className="text-2xl font-semibold text-gray-800 text-center mb-6">
+        <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">
           Sign In
         </h2>
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={handleDummyLogin}
+          className="w-full bg-gray-200 text-gray-700 py-2 rounded-md hover:bg-gray-300 transition duration-200 mb-4"
+          type="button"
+        >
+          Dummy Login
+        </motion.button>
 
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form ref={formRef} onSubmit={handleLogin} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Email
@@ -71,6 +94,7 @@ const Login = () => {
               placeholder="Enter your email"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
+              ref={emailRef}
             />
           </div>
 
@@ -85,6 +109,7 @@ const Login = () => {
                 placeholder="Enter your password"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
+                ref={passwordRef}
               />
               <button
                 type="button"

@@ -1,12 +1,19 @@
 /* eslint-disable no-unused-vars */
-import { useContext, useState, useRef } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useContext, useState, useRef, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../providers/AuthProvider";
-import { motion } from "framer-motion";
-import { Eye, EyeOff } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Eye, EyeOff, X } from "lucide-react";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import GoogleLogin from "./GoogleLogin";
 import FacebookLogin from "./FacebookLogin";
+
+const modalVariants = {
+  hidden: { scale: 0.95, opacity: 0, y: 30 },
+  visible: { scale: 1, opacity: 1, y: 0 },
+  exit: { scale: 0.95, opacity: 0, y: 30 },
+};
 
 const Login = () => {
   const { signInUser, setUser, setLoading } = useContext(AuthContext);
@@ -14,9 +21,22 @@ const Login = () => {
   const navigate = useNavigate();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetMsg, setResetMsg] = useState("");
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const formRef = useRef(null);
+
+  // Prevent background scrolling
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+    return () => document.body.classList.remove("overflow-hidden");
+  }, [isModalOpen]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -25,8 +45,7 @@ const Login = () => {
 
     signInUser(email, password)
       .then((result) => {
-        const user = result.user;
-        setUser(user);
+        setUser(result.user);
         setLoading(false);
         e.target.reset();
         setError("");
@@ -38,7 +57,6 @@ const Login = () => {
         navigate(location?.state ? location.state : "/");
       })
       .catch((error) => {
-        console.error("Login error:", error.code, error.message); // Debug: Log detailed error
         let errorMessage = "Invalid email or password. Please try again.";
         if (error.code === "auth/user-not-found") {
           errorMessage = "No account found with this email.";
@@ -62,8 +80,83 @@ const Login = () => {
     passwordRef.current.value = "mehEdi@123";
   };
 
+  const handlePasswordReset = async (e) => {
+    e.preventDefault();
+    const auth = getAuth();
+    try {
+      await sendPasswordResetEmail(auth, resetEmail);
+      setResetMsg("Password reset email sent!");
+      setResetEmail("");
+    } catch (err) {
+      setResetMsg("Error: " + err.message);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      {/* Custom Forgot Password Modal */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black backdrop-blur-sm z-40"
+              onClick={() => setIsModalOpen(false)}
+            />
+            <motion.div
+              variants={modalVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="fixed inset-0 flex items-center justify-center z-50 p-4"
+            >
+              <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-md relative">
+                <button
+                  className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+                  onClick={() => setIsModalOpen(false)}
+                >
+                  <X size={20} />
+                </button>
+                <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                  Reset Password
+                </h3>
+                <form onSubmit={handlePasswordReset} className="space-y-4">
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                    required
+                  />
+                  {resetMsg && (
+                    <p className="text-sm text-blue-600">{resetMsg}</p>
+                  )}
+                  <div className="flex justify-end space-x-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsModalOpen(false)}
+                      className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                    >
+                      Send Link
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Login Form */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -73,15 +166,17 @@ const Login = () => {
         <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">
           Sign In
         </h2>
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={handleDummyLogin}
-          className="w-full bg-gray-200 text-gray-700 py-2 rounded-md hover:bg-gray-300 transition duration-200 mb-4"
-          type="button"
-        >
-          Dummy Login
-        </motion.button>
+        <div className="flex justify-center">
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleDummyLogin}
+            className="btn bg-gray-200 text-gray-700 py-2 rounded-md hover:bg-gray-300 transition duration-200 mb-4"
+            type="button"
+          >
+            Dummy Login
+          </motion.button>
+        </div>
 
         <form ref={formRef} onSubmit={handleLogin} className="space-y-4">
           <div>
@@ -92,7 +187,7 @@ const Login = () => {
               name="email"
               type="email"
               placeholder="Enter your email"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
               required
               ref={emailRef}
             />
@@ -107,7 +202,7 @@ const Login = () => {
                 name="password"
                 type={passwordVisible ? "text" : "password"}
                 placeholder="Enter your password"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
                 required
                 ref={passwordRef}
               />
@@ -139,9 +234,13 @@ const Login = () => {
               />
               <span className="ml-2 text-gray-600">Remember me</span>
             </label>
-            <a href="/reset-password" className="text-blue-600 hover:underline">
+            <button
+              type="button"
+              onClick={() => setIsModalOpen(true)}
+              className="text-blue-600 hover:underline"
+            >
               Forgot password?
-            </a>
+            </button>
           </div>
 
           <motion.button
@@ -164,9 +263,9 @@ const Login = () => {
           className="mt-6 text-center text-sm text-gray-600"
         >
           Don’t have an account?{" "}
-          <a href="/auth/register" className="text-blue-600 hover:underline">
+          <Link to="/register" className="text-blue-600 hover:underline">
             Sign up
-          </a>
+          </Link>
         </motion.p>
       </motion.div>
     </div>

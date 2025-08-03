@@ -98,7 +98,6 @@ const Profile = () => {
         `/users/${formData.email}`,
         formData
       );
-      console.log("User data updated:", response.data);
       toast.success("Profile updated successfully!", {
         position: "top-left",
         autoClose: 1500,

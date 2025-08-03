@@ -18,11 +18,13 @@ const modalVariants = {
   exit: { scale: 0.9, opacity: 0, y: 20 },
 };
 
-const ReviewModal = ({ isOpen, closeModal, university, onReviewAdded }) => {
+const ReviewModal = ({ isOpen, closeModal, university }) => {
   const axiosPublic = useAxiosPublic();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+  // console.log(university);
   const [userData] = useUsers();
+  // console.log(userData);
 
   // Prevent background scrolling when modal is open
   useEffect(() => {
@@ -49,23 +51,14 @@ const ReviewModal = ({ isOpen, closeModal, university, onReviewAdded }) => {
       createdAt: new Date().toISOString(),
     };
 
-    try {
-      // Send data to backend
-      const res = await axiosPublic.post("/reviews", reviewDetails);
-      if (res.status === 200) {
-        toast.success("Review submitted successfully!");
-        // Call the callback to update reviews in parent component
-        onReviewAdded({
-          ...reviewDetails,
-          _id: res.data._id || Date.now().toString(), // Use server-provided _id or fallback
-        });
-      } else {
-        toast.error("Failed to submit review. Please try again.");
-      }
-    } catch (err) {
-      console.error("Error submitting review:", err);
-      toast.error("Failed to submit review. Please try again.");
+    //? send data in backend
+    const res = await axiosPublic.post("/reviews", reviewDetails);
+    if (res.status === 200) {
+      toast.success("Review submitted successfully!");
+    } else {
+      alert("Failed to submit review. Please try again.");
     }
+    //?
 
     setRating(0);
     setComment("");

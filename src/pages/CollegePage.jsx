@@ -8,7 +8,7 @@ import useUniversities from "../hooks/useUniversities.jsx";
 const CollegePage = () => {
   const [universities, isLoadingUniversities] = useUniversities();
   const [searchQuery, setSearchQuery] = useState("");
-  console.log(universities);
+  // console.log(universities);
 
   // Compute filtered universities using useMemo to avoid redundant calculations
   const filteredUniversities = useMemo(() => {

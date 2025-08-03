@@ -71,7 +71,7 @@ const useAdmissionModal = () => {
       studentEmail: formData.candidateEmail, // Ensure studentEmail matches candidateEmail
     };
 
-    console.log("Submitting application:", updatedFormData); // Debug log
+    // console.log("Submitting application:", updatedFormData); // Debug log
 
     try {
       const response = await axiosPublic.post(

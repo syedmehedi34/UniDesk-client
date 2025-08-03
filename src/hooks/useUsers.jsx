@@ -6,6 +6,7 @@ const useUsers = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useAuth();
   const email = user?.email;
+  // console.log(email);
 
   const {
     data: userData = [],

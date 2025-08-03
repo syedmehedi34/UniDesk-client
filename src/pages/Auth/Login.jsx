@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../../providers/AuthProvider";
 import { motion, AnimatePresence } from "framer-motion";
 import { Eye, EyeOff, X } from "lucide-react";
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import GoogleLogin from "./GoogleLogin";
 import FacebookLogin from "./FacebookLogin";
 
@@ -16,7 +15,8 @@ const modalVariants = {
 };
 
 const Login = () => {
-  const { signInUser, setUser, setLoading } = useContext(AuthContext);
+  const { signInUser, setUser, setLoading, resetPassword } =
+    useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -82,13 +82,36 @@ const Login = () => {
 
   const handlePasswordReset = async (e) => {
     e.preventDefault();
-    const auth = getAuth();
+    setResetMsg("");
+    setLoading(true);
+
     try {
-      await sendPasswordResetEmail(auth, resetEmail);
-      setResetMsg("Password reset email sent!");
+      await resetPassword(resetEmail);
+      setResetMsg(
+        "Password reset email sent successfully! Please check your inbox."
+      );
       setResetEmail("");
-    } catch (err) {
-      setResetMsg("Error: " + err.message);
+      toast.success("Password reset email sent!", {
+        position: "top-left",
+        autoClose: 3000,
+        pauseOnHover: true,
+      });
+      setTimeout(() => setIsModalOpen(false), 2000);
+    } catch (error) {
+      let errorMessage = "Failed to send password reset email.";
+      if (error.code === "auth/invalid-email") {
+        errorMessage = "Invalid email format.";
+      } else if (error.code === "auth/user-not-found") {
+        errorMessage = "No account found with this email.";
+      }
+      setResetMsg(errorMessage);
+      toast.error(errorMessage, {
+        position: "top-left",
+        autoClose: 3000,
+        pauseOnHover: true,
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -132,7 +155,15 @@ const Login = () => {
                     required
                   />
                   {resetMsg && (
-                    <p className="text-sm text-blue-600">{resetMsg}</p>
+                    <p
+                      className={`text-sm ${
+                        resetMsg.includes("Error")
+                          ? "text-red-600"
+                          : "text-green-600"
+                      }`}
+                    >
+                      {resetMsg}
+                    </p>
                   )}
                   <div className="flex justify-end space-x-2">
                     <button

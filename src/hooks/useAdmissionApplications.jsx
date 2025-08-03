@@ -13,7 +13,7 @@ const useAdmissionApplications = () => {
     error,
     refetch: userCollegeRefetch,
   } = useQuery({
-    queryKey: ["userData", email],
+    queryKey: ["userColleges", email],
     queryFn: async () => {
       if (!email) {
         return [];

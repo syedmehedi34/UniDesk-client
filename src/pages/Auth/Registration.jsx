@@ -7,12 +7,14 @@ import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import GoogleLogin from "./GoogleLogin";
 import FacebookLogin from "./FacebookLogin";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Registration = () => {
   const navigate = useNavigate();
   const { createNewUser, setUser, updateUser } = useContext(AuthContext);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState("");
+  const axiosPublic = useAxiosPublic();
 
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
   const handleSubmit = (e) => {
@@ -33,6 +35,20 @@ const Registration = () => {
       .then((result) => {
         const user = result.user;
         setUser(user);
+        // Send user data to the backend using axiosPublic
+        axiosPublic
+          .post("/users", {
+            uid: user.uid,
+            name: name,
+            email: email,
+            createdAt: user.metadata.creationTime,
+          })
+          .then((response) => {
+            console.log("User data saved to backend:", response.data);
+          })
+          .catch((err) => {
+            console.error("Error saving user data:", err);
+          });
         toast.success("Congratulations! Successfully created a new account", {
           position: "top-left",
           autoClose: 2000,

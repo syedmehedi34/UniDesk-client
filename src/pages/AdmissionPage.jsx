@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   FaSearch,
@@ -13,13 +13,17 @@ import AdmissionModal from "../components/AdmissionModal";
 import Loader from "../components/Loader";
 import { useAuth } from "../providers/AuthProvider";
 import useUsers from "../hooks/useUsers";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 
 const AdmissionPage = () => {
+  const axiosPublic = useAxiosPublic();
   const { user } = useAuth();
   const [universities, isLoadingUniversities] = useUniversities();
   const [userData, isLoadingUserData, userDataRefetch] = useUsers();
-  // console.log(userData.college);
   const [searchTerm, setSearchTerm] = useState("");
+  const [applications, setApplications] = useState([]);
+  const [isLoadingApplications, setIsLoadingApplications] = useState(false);
+  const [error, setError] = useState(null);
   const {
     isModalOpen,
     openModal,
@@ -29,6 +33,29 @@ const AdmissionPage = () => {
     handleSubmit,
     selectedUniversity,
   } = useAdmissionModal();
+
+  // Fetch applications for the current user
+  const userEmail = user ? user.email : null;
+  useEffect(() => {
+    const fetchApplications = async () => {
+      if (userEmail) {
+        setIsLoadingApplications(true);
+        try {
+          const response = await axiosPublic.get("/applications", {
+            params: { studentEmail: userEmail },
+          });
+          setApplications(Array.isArray(response.data) ? response.data : []);
+        } catch (err) {
+          console.error("Error fetching applications:", err);
+          setError("Failed to load applications. Please try again later.");
+          setApplications([]);
+        } finally {
+          setIsLoadingApplications(false);
+        }
+      }
+    };
+    fetchApplications();
+  }, [userEmail, axiosPublic]);
 
   // Filter universities based on search term
   const filteredUniversities = universities.filter((university) =>
@@ -62,7 +89,7 @@ const AdmissionPage = () => {
   };
 
   // Loading state
-  if (isLoadingUniversities) {
+  if (isLoadingUniversities || isLoadingApplications) {
     return <Loader />;
   }
 
@@ -93,53 +120,79 @@ const AdmissionPage = () => {
           </div>
         </div>
 
+        {/* Error Display */}
+        {error && <div className="text-center text-red-500 mb-6">{error}</div>}
+
         {/* University Cards */}
         <div className="space-y-6">
           {filteredUniversities.length > 0 ? (
-            filteredUniversities.map((university, index) => (
-              <motion.div
-                key={university._id}
-                variants={cardVariants}
-                custom={index}
-                className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300"
-              >
-                <h2 className="text-xl font-semibold text-gray-900 truncate">
-                  {university.name}
-                </h2>
-                <div className="mt-4 space-y-3">
-                  <p className="text-gray-600 flex items-center">
-                    <FaMapMarkerAlt className="h-5 w-5 text-red-500 mr-2" />
-                    {university.location}
-                  </p>
-                  <p className="text-gray-600 flex items-center">
-                    <FaCalendarAlt className="h-5 w-5 text-green-500 mr-2" />
-                    <span className="font-semibold mr-1.5">Deadline:</span>{" "}
-                    {university.admissionDates.start} to{" "}
-                    {university.admissionDates.end}
-                  </p>
-                </div>
-                {user ? (
-                  <button
-                    onClick={() => {
-                      openModal(university);
-                    }}
-                    className="mt-4 inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-300"
-                  >
-                    Apply Now
-                    <FaArrowRight className="ml-2" />
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => alert("Please log in to apply")}
-                    className={`mt-6 inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-300 ${
-                      user ? "" : "cursor-not-allowed opacity-50"
-                    }`}
-                  >
-                    Apply Now <FaArrowRight className="ml-2" />
-                  </button>
-                )}
-              </motion.div>
-            ))
+            filteredUniversities.map((university, index) => {
+              // Check if the user has already applied to this university
+              const hasApplied = applications.some(
+                (app) => app.universityId === university._id
+              );
+
+              return (
+                <motion.div
+                  key={university._id}
+                  variants={cardVariants}
+                  custom={index}
+                  className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300 flex justify-between items-center"
+                >
+                  <div>
+                    <h2 className="text-xl font-semibold text-gray-900 truncate">
+                      {university.name}
+                    </h2>
+                    <div className="mt-4 space-y-3">
+                      <p className="text-gray-600 flex items-center">
+                        <FaMapMarkerAlt className="h-5 w-5 text-red-500 mr-2" />
+                        {university.location}
+                      </p>
+                      <p className="text-gray-600 flex items-center">
+                        <FaCalendarAlt className="h-5 w-5 text-green-500 mr-2" />
+                        <span className="font-semibold mr-1.5">Deadline:</span>{" "}
+                        {university.admissionDates.start} to{" "}
+                        {university.admissionDates.end}
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    {user ? (
+                      <button
+                        onClick={() => {
+                          if (!hasApplied) {
+                            openModal(university);
+                          }
+                        }}
+                        className={`inline-flex items-center px-4 py-2 font-semibold rounded-lg transition-colors duration-300 ${
+                          hasApplied
+                            ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+                            : "bg-blue-600 text-white hover:bg-blue-700"
+                        }`}
+                        disabled={hasApplied}
+                        title={
+                          hasApplied
+                            ? "You have already applied to this university."
+                            : ""
+                        }
+                      >
+                        {hasApplied ? "Applied" : "Apply Now"}
+                        <FaArrowRight className="ml-2" />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => alert("Please log in to apply")}
+                        className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-300 cursor-not-allowed opacity-50"
+                        title="You must be logged in to apply"
+                      >
+                        Apply Now
+                        <FaArrowRight className="ml-2" />
+                      </button>
+                    )}
+                  </div>
+                </motion.div>
+              );
+            })
           ) : (
             <p className="text-gray-600 text-center">
               No universities found matching your search.

@@ -8,20 +8,37 @@ import {
   FaCalendarAlt,
   FaFlask,
   FaImages,
-  // FaSparkles,
   FaTrophy,
   FaEnvelope,
   FaPhone,
   FaGlobe,
   FaDollarSign,
   FaArrowRight,
+  FaBook,
+  FaBuilding,
+  FaUsers,
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
 } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css"; // Import Leaflet CSS
+import L from "leaflet"; // For custom marker icon
 
 import useUniversities from "../hooks/useUniversities";
 import Loader from "../components/Loader";
 import useAdmissionModal from "../hooks/useAdmissionModal";
 import AdmissionModal from "../components/AdmissionModal";
+
+// Fix for default Leaflet marker icon issue
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+});
 
 const CollegeDetails = () => {
   const {
@@ -39,49 +56,39 @@ const CollegeDetails = () => {
   const [college, setCollege] = useState(null);
 
   useEffect(() => {
-    // Simulate fetching college by ID; replace with API call in a real app
     const foundCollege = universities.find((c) => c._id === collegeId);
     setCollege(foundCollege);
   }, [collegeId, universities]);
 
-  // Animation variants for the main container
+  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut",
-      },
+      transition: { duration: 0.6, ease: "easeOut" },
     },
   };
 
-  // Animation variants for sections
   const sectionVariants = {
     hidden: { opacity: 0, x: -30 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.5,
-        delay: 0.2,
-      },
-    },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5, delay: 0.2 } },
   };
 
-  // Animation for gallery images and items
   const itemVariants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: (i) => ({
       opacity: 1,
       scale: 1,
-      transition: {
-        delay: i * 0.2,
-        duration: 0.5,
-        ease: "easeOut",
-      },
+      transition: { delay: i * 0.2, duration: 0.5, ease: "easeOut" },
     }),
+  };
+
+  // Map configuration
+  const mapContainerStyle = {
+    width: "100%",
+    height: "400px",
+    borderRadius: "12px",
   };
 
   if (!college) {
@@ -108,9 +115,7 @@ const CollegeDetails = () => {
               {college.name}
             </h1>
             <button
-              onClick={() => {
-                openModal(college);
-              }}
+              onClick={() => openModal(college)}
               className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-full hover:bg-blue-700 transition-colors duration-300 shadow-lg"
             >
               Apply Now <FaArrowRight className="ml-2" />
@@ -150,6 +155,14 @@ const CollegeDetails = () => {
                 <span className="font-medium">Research Works:</span>{" "}
                 {college.numberOfResearchWorks}
               </p>
+              <p className="text-gray-700 flex items-center text-lg">
+                <FaUsers className="h-6 w-6 text-purple-500 mr-3" />
+                <span className="font-medium">
+                  Enrollment:
+                </span> Undergraduate:{" "}
+                {college.enrollment.undergraduate.toLocaleString()}, Graduate:{" "}
+                {college.enrollment.graduate.toLocaleString()}
+              </p>
             </div>
           </motion.div>
 
@@ -174,6 +187,47 @@ const CollegeDetails = () => {
                   custom={index}
                 />
               ))}
+            </div>
+          </motion.div>
+
+          {/* Campus Location with Leaflet Map */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
+              <FaMapMarkerAlt className="h-7 w-7 text-red-500 mr-3" />
+              Campus Location
+            </h2>
+            <div className="bg-gray-50 p-6 rounded-xl">
+              <p className="text-gray-700 mb-4 text-lg">
+                <span className="font-medium">Address:</span>{" "}
+                {college.campusLocation.address}
+              </p>
+              <div style={mapContainerStyle}>
+                <MapContainer
+                  center={[
+                    college.campusLocation.location.lat,
+                    college.campusLocation.location.lng,
+                  ]}
+                  zoom={15}
+                  style={mapContainerStyle}
+                >
+                  <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  />
+                  <Marker
+                    position={[
+                      college.campusLocation.location.lat,
+                      college.campusLocation.location.lng,
+                    ]}
+                  >
+                    <Popup>{college.name}</Popup>
+                  </Marker>
+                </MapContainer>
+              </div>
             </div>
           </motion.div>
 
@@ -208,6 +262,51 @@ const CollegeDetails = () => {
             </div>
           </motion.div>
 
+          {/* Research History */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
+              <FaBook className="h-7 w-7 text-blue-500 mr-3" />
+              Research History
+            </h2>
+            <div className="space-y-6">
+              {college.researchHistory.map((research, index) => (
+                <motion.div
+                  key={index}
+                  className="p-6 bg-blue-50 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
+                  variants={itemVariants}
+                  custom={index}
+                >
+                  <h3 className="text-xl font-semibold text-gray-900 flex items-center">
+                    <FaBook className="h-6 w-6 text-blue-500 mr-3" />
+                    {research.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 mt-1">
+                    <span className="font-medium">Authors:</span>{" "}
+                    {research.authors.join(", ")}
+                  </p>
+                  <p className="text-sm text-gray-600 mt-1">
+                    <span className="font-medium">Publication Date:</span>{" "}
+                    {research.publicationDate}
+                  </p>
+                  <p className="text-gray-700 mt-2">
+                    <a
+                      href={research.link}
+                      className="text-blue-600 hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View Research
+                    </a>
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
           {/* Sports Section */}
           <motion.div
             variants={sectionVariants}
@@ -231,6 +330,117 @@ const CollegeDetails = () => {
                     {sport.name}
                   </h3>
                   <p className="text-gray-700 mt-2">{sport.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Admission Process */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
+              <FaBook className="h-7 w-7 text-blue-500 mr-3" />
+              Admission Process
+            </h2>
+            <div className="p-6 bg-gray-50 rounded-xl">
+              <p className="text-gray-700 text-lg">
+                {college.admissionProcess}
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Reviews */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
+              <FaStar className="h-7 w-7 text-yellow-400 mr-3" />
+              Reviews
+            </h2>
+            <div className="space-y-6">
+              {college.reviews.map((review, index) => (
+                <motion.div
+                  key={index}
+                  className="p-6 bg-blue-50 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
+                  variants={itemVariants}
+                  custom={index}
+                >
+                  <h3 className="text-xl font-semibold text-gray-900 flex items-center">
+                    <FaStar className="h-6 w-6 text-yellow-400 mr-3" />
+                    Rating: {review.rating}/5
+                  </h3>
+                  <p className="text-sm text-gray-600 mt-1">
+                    <span className="font-medium">Date:</span> {review.date}
+                  </p>
+                  <p className="text-gray-700 mt-2">{review.comment}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Facilities */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
+              <FaBuilding className="h-7 w-7 text-teal-500 mr-3" />
+              Facilities
+            </h2>
+            <div className="space-y-6">
+              {college.facilities.map((facility, index) => (
+                <motion.div
+                  key={index}
+                  className="p-6 bg-blue-50 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
+                  variants={itemVariants}
+                  custom={index}
+                >
+                  <h3 className="text-xl font-semibold text-gray-900 flex items-center">
+                    <FaBuilding className="h-6 w-6 text-teal-500 mr-3" />
+                    {facility.name}
+                  </h3>
+                  <p className="text-gray-700 mt-2">{facility.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Programs */}
+          <motion.div
+            variants={sectionVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
+              <FaBook className="h-7 w-7 text-blue-500 mr-3" />
+              Programs
+            </h2>
+            <div className="space-y-6">
+              {college.programs.map((program, index) => (
+                <motion.div
+                  key={index}
+                  className="p-6 bg-blue-50 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300"
+                  variants={itemVariants}
+                  custom={index}
+                >
+                  <h3 className="text-xl font-semibold text-gray-900 flex items-center">
+                    <FaBook className="h-6 w-6 text-blue-500 mr-3" />
+                    {program.name}
+                  </h3>
+                  <p className="text-sm text-gray-600 mt-1">
+                    <span className="font-medium">Degree Type:</span>{" "}
+                    {program.degreeType}
+                  </p>
+                  <p className="text-sm text-gray-600 mt-1">
+                    <span className="font-medium">Duration:</span>{" "}
+                    {program.duration}
+                  </p>
                 </motion.div>
               ))}
             </div>
@@ -294,6 +504,45 @@ const CollegeDetails = () => {
                   <GoDotFill size={15} />
                   <span className="font-medium ml-2">Graduate:</span> $
                   {college.tuition.graduate.toLocaleString()}
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900 flex items-center">
+                  <FaFacebook className="h-6 w-6 text-blue-600 mr-3" />
+                  Social Media
+                </h3>
+                <p className="text-gray-700 flex items-center mt-3 text-lg">
+                  <FaFacebook className="h-6 w-6 text-blue-600 mr-3" />
+                  <a
+                    href={college.socialMedia.facebook}
+                    className="text-blue-600 hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Facebook
+                  </a>
+                </p>
+                <p className="text-gray-700 flex items-center mt-2 text-lg">
+                  <FaTwitter className="h-6 w-6 text-blue-400 mr-3" />
+                  <a
+                    href={college.socialMedia.twitter}
+                    className="text-blue-600 hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Twitter
+                  </a>
+                </p>
+                <p className="text-gray-700 flex items-center mt-2 text-lg">
+                  <FaInstagram className="h-6 w-6 text-pink-500 mr-3" />
+                  <a
+                    href={college.socialMedia.instagram}
+                    className="text-blue-600 hover:underline"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Instagram
+                  </a>
                 </p>
               </div>
             </div>

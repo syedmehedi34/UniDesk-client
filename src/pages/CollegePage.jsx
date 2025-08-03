@@ -1,20 +1,14 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  FaMapMarkerAlt,
-  FaStar,
-  FaGraduationCap,
-  FaDollarSign,
-  FaLink,
-  FaBook,
-} from "react-icons/fa";
+import { FaMapMarkerAlt, FaStar, FaDollarSign, FaBook } from "react-icons/fa";
 import useUniversities from "../hooks/useUniversities.jsx";
 
 const CollegePage = () => {
   const [universities, isLoadingUniversities] = useUniversities();
   const [searchQuery, setSearchQuery] = useState("");
+  console.log(universities);
 
   // Compute filtered universities using useMemo to avoid redundant calculations
   const filteredUniversities = useMemo(() => {

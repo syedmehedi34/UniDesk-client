@@ -10,6 +10,7 @@ import {
 import { StarIcon as StarSolidIcon } from "@heroicons/react/24/solid";
 import useUsers from "../hooks/useUsers";
 import useAxiosPublic from "../hooks/useAxiosPublic";
+import { toast } from "react-toastify";
 
 const modalVariants = {
   hidden: { scale: 0.9, opacity: 0, y: 20 },
@@ -52,7 +53,7 @@ const ReviewModal = ({ isOpen, closeModal, university }) => {
     //? send data in backend
     const res = await axiosPublic.post("/reviews", reviewDetails);
     if (res.status === 200) {
-      alert("Review submitted successfully!");
+      toast.success("Review submitted successfully!");
     } else {
       alert("Failed to submit review. Please try again.");
     }

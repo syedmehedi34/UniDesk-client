@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { useAuth } from "../providers/AuthProvider";
+import useUsers from "../hooks/useUsers";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
+  const [userData] = useUsers();
   const [isOpen, setIsOpen] = useState(false); // Mobile menu toggle
   const [isScrolled, setIsScrolled] = useState(false); // Scroll state for blur
 
@@ -85,7 +87,7 @@ const Navbar = () => {
                     isScrolled ? "text-gray-800" : "text-white"
                   }`}
                 >
-                  {user.displayName || user.email}
+                  {userData.name || userData.email}
                 </Link>
                 <button
                   onClick={logOut}
@@ -188,7 +190,7 @@ const Navbar = () => {
                   onClick={toggleMenu}
                   className="hover:text-blue-300"
                 >
-                  {user.displayName || user.email}
+                  {userData.name || userData.email}
                 </Link>
                 <button
                   onClick={() => {

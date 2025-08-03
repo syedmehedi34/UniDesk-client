@@ -1,9 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { useParams } from "react-router";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useAdmissionApplications from "../hooks/useAdmissionApplications";
 import useUniversities from "../hooks/useUniversities";
+import useUsers from "../hooks/useUsers";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 import ReviewModal from "../components/ReviewModal";
 import {
   UserIcon,
@@ -15,17 +17,58 @@ import {
   CalendarIcon,
   StarIcon,
 } from "@heroicons/react/24/outline";
+import { StarIcon as StarSolidIcon } from "@heroicons/react/24/solid";
 
 const MyCollegeDetails = () => {
   const { _id } = useParams();
   const [userColleges] = useAdmissionApplications();
   const [universities] = useUniversities();
+  const [userData] = useUsers();
+  const axiosPublic = useAxiosPublic();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reviews, setReviews] = useState([]);
+  const [isLoadingReviews, setIsLoadingReviews] = useState(false);
+  const [error, setError] = useState(null);
 
   const selectedApplication = userColleges?.find((item) => item._id === _id);
   const selectedUniversity = universities?.find(
     (uni) => uni._id === selectedApplication?.universityId
   );
+
+  // Fetch reviews for the selected university and user
+  useEffect(() => {
+    const fetchReviews = async () => {
+      if (selectedUniversity?._id && userData?.email) {
+        setIsLoadingReviews(true);
+        try {
+          const response = await axiosPublic.get("/api/reviews", {
+            params: {
+              universityId: selectedUniversity?._id,
+              studentEmail: userData?.email,
+            },
+          });
+          setReviews(Array.isArray(response.data) ? response.data : []);
+        } catch (err) {
+          console.error("Error fetching reviews:", err);
+          setError("Failed to load reviews. Please try again later.");
+          setReviews([]);
+        } finally {
+          setIsLoadingReviews(false);
+        }
+      }
+    };
+    fetchReviews();
+  }, [
+    selectedApplication?._id,
+    userData?.email,
+    axiosPublic,
+    selectedUniversity?._id,
+  ]);
+
+  // Callback to handle new review submission
+  const handleReviewAdded = (newReview) => {
+    setReviews((prevReviews) => [...prevReviews, newReview]);
+  };
 
   if (!selectedApplication) {
     return (
@@ -147,6 +190,54 @@ const MyCollegeDetails = () => {
         )}
       </div>
 
+      {/* Reviews Section */}
+      <motion.div
+        className="mt-8"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6 }}
+      >
+        <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+          My Reviews
+        </h3>
+        {isLoadingReviews ? (
+          <div className="text-center text-gray-600">Loading reviews...</div>
+        ) : error ? (
+          <div className="text-center text-red-500">{error}</div>
+        ) : reviews.length === 0 ? (
+          <div className="text-center text-gray-600">No reviews found.</div>
+        ) : (
+          <div className="space-y-4">
+            {reviews.map((review, index) => (
+              <motion.div
+                key={review._id || index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+                className="bg-gray-50 p-4 rounded-lg border border-gray-200"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i}>
+                      {i < review.rating ? (
+                        <StarSolidIcon className="h-5 w-5 text-yellow-400" />
+                      ) : (
+                        <StarIcon className="h-5 w-5 text-gray-300" />
+                      )}
+                    </span>
+                  ))}
+                </div>
+                <p className="text-gray-700">{review.comment}</p>
+                <p className="text-sm text-gray-500 mt-2">
+                  Submitted on:{" "}
+                  {new Date(review.createdAt).toLocaleDateString()}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        )}
+      </motion.div>
+
       {/* Add Review Button */}
       <motion.div
         className="mt-8 text-center"
@@ -167,6 +258,7 @@ const MyCollegeDetails = () => {
         isOpen={isModalOpen}
         closeModal={() => setIsModalOpen(false)}
         university={selectedUniversity}
+        onReviewAdded={handleReviewAdded} // Pass the callback
       />
     </motion.div>
   );

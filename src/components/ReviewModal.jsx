@@ -8,6 +8,8 @@ import {
   StarIcon,
 } from "@heroicons/react/24/outline";
 import { StarIcon as StarSolidIcon } from "@heroicons/react/24/solid";
+import useUsers from "../hooks/useUsers";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 
 const modalVariants = {
   hidden: { scale: 0.9, opacity: 0, y: 20 },
@@ -16,8 +18,12 @@ const modalVariants = {
 };
 
 const ReviewModal = ({ isOpen, closeModal, university }) => {
+  const axiosPublic = useAxiosPublic();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+  // console.log(university);
+  const [userData] = useUsers();
+  // console.log(userData);
 
   // Prevent background scrolling when modal is open
   useEffect(() => {
@@ -31,13 +37,27 @@ const ReviewModal = ({ isOpen, closeModal, university }) => {
     };
   }, [isOpen]);
 
-  const handleReviewSubmit = (e) => {
+  const handleReviewSubmit = async (e) => {
     e.preventDefault();
-    console.log("Review submitted:", {
+    const reviewDetails = {
+      studentName: userData?.name || "Anonymous",
+      studentEmail: userData?.email || "",
+      universityName: university?.name || "Unknown University",
+      universityLocation: university?.location || "Unknown Location",
       rating,
       comment,
       universityId: university?._id,
-    });
+    };
+
+    //? send data in backend
+    const res = await axiosPublic.post("/reviews", reviewDetails);
+    if (res.status === 200) {
+      alert("Review submitted successfully!");
+    } else {
+      alert("Failed to submit review. Please try again.");
+    }
+    //?
+
     setRating(0);
     setComment("");
     closeModal();

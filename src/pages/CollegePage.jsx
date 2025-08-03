@@ -156,7 +156,7 @@ const CollegePage = () => {
                     {/* View Details Link */}
                     <Link
                       to={`/colleges/${college._id}`}
-                      className="inline-block bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors duration-300"
+                      className="inline-block bg-teal-600 text-white px-4 py-2 rounded-full hover:bg-teal-700 transition-colors duration-300"
                       aria-label={`View details for ${college.name}`}
                     >
                       View Details

@@ -179,7 +179,7 @@ const AdmissionPage = () => {
                         className={`inline-flex items-center px-4 py-2 font-semibold rounded-lg transition-colors duration-300 ${
                           hasApplied
                             ? "bg-gray-400 text-gray-700 cursor-not-allowed"
-                            : "bg-blue-600 text-white hover:bg-blue-700"
+                            : "bg-teal-600 text-white hover:bg-teal-700 cursor-pointer"
                         }`}
                         disabled={hasApplied}
                         title={

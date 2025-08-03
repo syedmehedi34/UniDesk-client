@@ -123,7 +123,7 @@ const CollegeReviews = () => {
             </div>
             <button
               onClick={scrollRight}
-              className="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors duration-300 ml-4"
+              className="p-2 bg-teal-600 text-white rounded-full hover:bg-teal-700 transition-colors duration-300 ml-4"
               aria-label="Scroll right"
             >
               <ChevronRightIcon className="w-6 h-6" />
@@ -156,7 +156,7 @@ const CollegeReviews = () => {
         <div className="flex items-center">
           <button
             onClick={scrollLeft}
-            className="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors duration-300 mr-4"
+            className="p-2 bg-teal-600 text-white rounded-full hover:bg-teal-700 transition-colors duration-300 mr-4"
             aria-label="Scroll left"
           >
             <ChevronLeftIcon className="w-6 h-6" />
@@ -211,7 +211,7 @@ const CollegeReviews = () => {
                   <p className="text-sm text-gray-600 mb-4">{review.comment}</p>
                   <Link
                     to={`/colleges/${review.universityId}`}
-                    className="inline-block bg-blue-600 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition-colors duration-300"
+                    className="inline-block bg-teal-600 text-white px-4 py-2 rounded-full hover:bg-teal-700 transition-colors duration-300"
                     aria-label={`View details for ${review.universityName}`}
                   >
                     View College
@@ -222,7 +222,7 @@ const CollegeReviews = () => {
           </div>
           <button
             onClick={scrollRight}
-            className="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors duration-300 ml-4"
+            className="p-2 bg-teal-600 text-white rounded-full hover:bg-teal-700 transition-colors duration-300 ml-4"
             aria-label="Scroll right"
           >
             <ChevronRightIcon className="w-6 h-6" />

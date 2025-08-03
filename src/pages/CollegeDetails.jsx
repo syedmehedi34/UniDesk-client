@@ -109,7 +109,7 @@ const CollegeDetails = () => {
             </div>
             <button
               onClick={() => openModal(college)}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors flex items-center text-sm font-medium"
+              className="px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition-colors flex items-center text-sm font-medium"
             >
               Apply Now <FaArrowRight className="ml-2" />
             </button>

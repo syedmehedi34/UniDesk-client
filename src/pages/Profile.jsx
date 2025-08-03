@@ -342,7 +342,7 @@ const Profile = () => {
               ) : (
                 <Button
                   onClick={() => setIsEditing(true)}
-                  className="bg-blue-600 hover:bg-blue-700"
+                  className="bg-teal-600 hover:bg-teal-700"
                 >
                   Edit
                 </Button>

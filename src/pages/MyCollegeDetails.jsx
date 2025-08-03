@@ -252,7 +252,7 @@ const MyCollegeDetails = () => {
           className={`px-6 py-2 font-medium rounded-lg transition-colors duration-200 ${
             reviews.length > 0
               ? "bg-gray-400 text-gray-700 cursor-not-allowed"
-              : "bg-indigo-600 text-white hover:bg-indigo-700"
+              : "bg-teal-600 text-white hover:bg-teal-700"
           }`}
           disabled={reviews.length > 0}
         >

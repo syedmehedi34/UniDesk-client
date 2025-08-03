@@ -98,7 +98,9 @@ const Header = ({ onSearch }) => {
           </p>
           <Link
             to="/colleges"
-            className="inline-block px-8 py-3 bg-blue-700 text-white font-semibold rounded-full hover:bg-blue-800 transition transform hover:-translate-y-1"
+            className="inline-block px-8 py-3 bg-teal-700/30 text-white font-semibold rounded-full
+             hover:bg-teal-800/30 transition transform hover:-translate-y-1
+             backdrop-blur-md border border-white/30 shadow-lg"
           >
             Explore Colleges
           </Link>

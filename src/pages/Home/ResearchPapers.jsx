@@ -212,7 +212,7 @@ const ResearchPapers = () => {
                 href={paper.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block bg-blue-600 text-white text-sm px-3 py-1 rounded-md hover:bg-blue-700 transition-colors"
+                className="inline-block bg-teal-600 text-white text-sm px-3 py-1 rounded-md hover:bg-teal-700 transition-colors"
                 aria-label={`Read research paper: ${paper.title}`}
               >
                 Read Paper
@@ -224,7 +224,7 @@ const ResearchPapers = () => {
           <div className="text-center mt-6">
             <button
               onClick={() => setShowAll(!showAll)}
-              className="inline-flex items-center bg-blue-600 text-white text-sm px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center bg-gray-400 text-white text-sm px-4 py-2 rounded-md hover:bg-gray-600 transition-colors"
               aria-label={showAll ? "Show fewer papers" : "Show more papers"}
             >
               {showAll ? (

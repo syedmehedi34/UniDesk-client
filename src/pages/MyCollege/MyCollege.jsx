@@ -87,7 +87,7 @@ const MyCollege = () => {
               <div className="mt-4 text-right">
                 <Link
                   to={`/my-college/details/${college._id}`}
-                  className="inline-block px-4 py-2 text-sm font-medium bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 transition duration-200"
+                  className="inline-block px-4 py-2 text-sm font-medium bg-teal-600 text-white rounded-lg shadow hover:bg-teal-700 transition duration-200"
                 >
                   Details
                 </Link>

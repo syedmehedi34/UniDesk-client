@@ -23,7 +23,7 @@ const AdmissionPage = () => {
     candidatePhone: "",
     address: "",
     dateOfBirth: "",
-    image: null,
+    image: "",
   });
 
   // Prevent background scrolling when modal is open
@@ -46,10 +46,10 @@ const AdmissionPage = () => {
 
   // Handle form input changes
   const handleInputChange = (e) => {
-    const { name, value, files } = e.target;
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: files ? files[0] : value,
+      [name]: value,
     }));
   };
 
@@ -72,7 +72,7 @@ const AdmissionPage = () => {
       candidatePhone: "",
       address: "",
       dateOfBirth: "",
-      image: null,
+      image: "",
     });
   };
 
@@ -97,7 +97,7 @@ const AdmissionPage = () => {
       candidatePhone: "",
       address: "",
       dateOfBirth: "",
-      image: null,
+      image: "",
     });
   };
 
@@ -358,14 +358,15 @@ const AdmissionPage = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
-                      Image
+                      Image URL
                     </label>
                     <input
-                      type="file"
+                      type="url"
                       name="image"
-                      accept="image/*"
+                      value={formData.image}
                       onChange={handleInputChange}
-                      className="mt-1 w-full p-3 border border-gray-300 rounded-lg"
+                      placeholder="Enter image URL (e.g., https://example.com/image.jpg)"
+                      className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                     />
                   </div>
                   <div className="flex justify-end space-x-4">

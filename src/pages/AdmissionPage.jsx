@@ -60,7 +60,7 @@ const AdmissionPage = () => {
 
   // Callback to handle new application submission
   const handleApplicationSubmitted = (newApplication) => {
-    console.log("New application submitted:", newApplication); // Debug log
+    // console.log("New application submitted:", newApplication); // Debug log
     setApplications((prevApplications) => {
       const updatedApplications = [...prevApplications, newApplication];
       // console.log("Updated applications state:", updatedApplications); // Debug log

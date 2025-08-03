@@ -11,8 +11,10 @@ import useUniversities from "../hooks/useUniversities";
 import useAdmissionModal from "../hooks/useAdmissionModal";
 import AdmissionModal from "../components/AdmissionModal";
 import Loader from "../components/Loader";
+import { useAuth } from "../providers/AuthProvider";
 
 const AdmissionPage = () => {
+  const { user } = useAuth();
   const [universities, isLoadingUniversities] = useUniversities();
   const [searchTerm, setSearchTerm] = useState("");
   const {
@@ -113,12 +115,26 @@ const AdmissionPage = () => {
                     {university.admissionDates.end}
                   </p>
                 </div>
-                <button
-                  onClick={() => openModal(university)}
-                  className="mt-6 inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-300"
-                >
-                  Apply Now <FaArrowRight className="ml-2" />
-                </button>
+                {user ? (
+                  <button
+                    onClick={() => {
+                      openModal(university);
+                    }}
+                    className="mt-4 inline-flex items-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-300"
+                  >
+                    Apply Now
+                    <FaArrowRight className="ml-2" />
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => alert("Please log in to apply")}
+                    className={`mt-6 inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-300 ${
+                      user ? "" : "cursor-not-allowed opacity-50"
+                    }`}
+                  >
+                    Apply Now <FaArrowRight className="ml-2" />
+                  </button>
+                )}
               </motion.div>
             ))
           ) : (

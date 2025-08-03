@@ -80,7 +80,9 @@ const MyCollegeDetails = () => {
 
   return (
     <motion.div
-      className="max-w-5xl mx-auto mt-12 bg-white p-8 shadow-2xl rounded-2xl border border-gray-100 mb-20"
+      className="max-w-5xl mx-auto mt-12 bg-white p-8 shadow-2xl rounded-2xl
+
+ border border-gray-100 mb-20"
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
@@ -247,9 +249,14 @@ const MyCollegeDetails = () => {
       >
         <button
           onClick={() => setIsModalOpen(true)}
-          className="px-6 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors duration-200"
+          className={`px-6 py-2 font-medium rounded-lg transition-colors duration-200 ${
+            reviews.length > 0
+              ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+              : "bg-indigo-600 text-white hover:bg-indigo-700"
+          }`}
+          disabled={reviews.length > 0}
         >
-          Add Review
+          {reviews.length > 0 ? "Review Submitted" : "Add Review"}
         </button>
       </motion.div>
 
@@ -258,7 +265,7 @@ const MyCollegeDetails = () => {
         isOpen={isModalOpen}
         closeModal={() => setIsModalOpen(false)}
         university={selectedUniversity}
-        onReviewAdded={handleReviewAdded} // Pass the callback
+        onReviewAdded={handleReviewAdded}
       />
     </motion.div>
   );

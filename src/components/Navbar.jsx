@@ -34,7 +34,7 @@ const Navbar = () => {
           {/* Left: Logo */}
           <div className="flex-shrink-0 flex items-center">
             {/* <img src="./../../public/icon.png" alt="" className="w-7" /> */}
-            <Link to="/" className="text-2xl font-bold">
+            <Link to="/" className="text-3xl font-bold lobster-regular">
               UniDesk
             </Link>
           </div>

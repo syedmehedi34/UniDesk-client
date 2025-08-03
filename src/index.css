@@ -1,2 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
 @import "tailwindcss";
 @plugin "daisyui";
+
+.lobster-regular {
+  font-family: "Lobster" !important;
+}
